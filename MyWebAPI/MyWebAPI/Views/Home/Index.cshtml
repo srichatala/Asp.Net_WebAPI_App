@@ -13,6 +13,7 @@
                 <th>City Name</th>
                 <th>Phone Number</th>
                 <th>Course Number</th>
+                <th>Actions</th>
             </tr>
             <tr ng-repeat="studentinfo in data">
                 <td>
@@ -32,6 +33,10 @@
                 </td>
                 <td>
                     {{studentinfo.Course}}
+                </td>
+                <td>
+                    <button class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;
+                    <button ng-click="remove($index)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
                 </td>
             </tr>
         </table>
