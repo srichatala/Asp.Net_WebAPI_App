@@ -62,8 +62,9 @@
                 <input type="text" class="form-control" ng-model="student.Course" placeholder="Course">
             </div>
             <div class="form-group">
-                <input type="submit" ng-click="add(student)" class="btn btn-success" value="Submit" />
-                <input type="submit" ng-click="update(student)" class="btn btn-success" value="Update" />
+                <input type="submit" ng-show="addSt" ng-click="add(student)" class="btn btn-success" value="Submit" />
+                <input type="submit" ng-show="updateSt" ng-click="update(student)" class="btn btn-warning" value="Update" />
+                <input type="submit" ng-show="clearSt" ng-click="clear()" class="btn btn-danger" value="Clear" />
             </div>
         </form>
         

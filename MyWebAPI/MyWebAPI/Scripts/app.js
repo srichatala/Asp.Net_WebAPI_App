@@ -2,7 +2,8 @@
 
 app.controller("myWebAPICtrl", function ($scope,$http) {
     $scope.name = "Hello World, Welcome to Web API Application";
-
+    $scope.addSt = true;
+    $scope.updateSt = false;
     $scope.renderStudentModels = function (response) {
         $scope.StData = response;
     };
@@ -31,6 +32,9 @@ app.controller("myWebAPICtrl", function ($scope,$http) {
     $scope.select = function (StudentID) {
         $http.get("api/Students/" + StudentID)
             .success(function (response) {
+                $scope.addSt = false;
+                $scope.updateSt = true;
+                $scope.clearSt = true;
                 $scope.student = response;
             });
     };
@@ -40,5 +44,11 @@ app.controller("myWebAPICtrl", function ($scope,$http) {
             .success(function (response) {
                 $scope.StudentInfo();
             });
+    };
+    $scope.clear = function () {
+        $scope.addSt = true;
+        $scope.updateSt = false;
+        $scope.clearSt = false;
+        $scope.student = null;
     };
 });
