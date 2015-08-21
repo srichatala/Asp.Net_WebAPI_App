@@ -5,42 +5,42 @@
 <div class="container" ng-app="myWebAPI">
     <h1>WebAPI application uisng Entity Framework and AngularJS</h1>
     <div ng-controller="myWebAPICtrl">
-        <table class="table table-striped">
-            <tr>
-                <th>Student ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>City Name</th>
-                <th>Phone Number</th>
-                <th>Course Number</th>
-                <th>Actions</th>
-            </tr>
-            <tr ng-repeat="studentinfo in data">
-                <td>
-                    {{studentinfo.StudentID}}
-                </td>
-                <td>
-                    {{studentinfo.FirstName}}
-                </td>
-                <td>
-                    {{studentinfo.LastName}}
-                </td>
-                <td>
-                    {{studentinfo.City}}
-                </td>
-                <td>
-                    {{studentinfo.PhoneNumber}}
-                </td>
-                <td>
-                    {{studentinfo.Course}}
-                </td>
-                <td>
-                    <button class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;
-                    <button ng-click="remove($index)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                </td>
-            </tr>
-        </table>
         <form>
+            <table class="table table-striped">
+                <tr>
+                    <th>Student ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>City Name</th>
+                    <th>Phone Number</th>
+                    <th>Course Number</th>
+                    <th>Actions</th>
+                </tr>
+                <tr ng-repeat="studentinfo in StData">
+                    <td>
+                        {{studentinfo.StudentID}}
+                    </td>
+                    <td>
+                        {{studentinfo.FirstName}}
+                    </td>
+                    <td>
+                        {{studentinfo.LastName}}
+                    </td>
+                    <td>
+                        {{studentinfo.City}}
+                    </td>
+                    <td>
+                        {{studentinfo.PhoneNumber}}
+                    </td>
+                    <td>
+                        {{studentinfo.Course}}
+                    </td>
+                    <td>
+                        <button class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;
+                        <button ng-click="remove(studentinfo.StudentID)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+            </table>
             <div class="form-group">
                 <label for="firstname">First Name</label>
                 <input type="text" class="form-control" ng-model="student.firstname" placeholder="First Name">
