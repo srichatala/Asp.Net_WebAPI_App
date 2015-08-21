@@ -14,5 +14,16 @@ namespace MyWebAPI.Controllers
 
             return View();
         }
+        public ActionResult Student()
+        {
+            ViewBag.Title = "Student Profile";
+            return View();
+        }
+
+        public ActionResult Faculty()
+        {
+            ViewBag.Title = "Faculty Profile";
+            return View();
+        }
     }
 }

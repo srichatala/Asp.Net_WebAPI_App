@@ -10,10 +10,12 @@ namespace MyWebAPI.Models
     public class CollegeContext :DbContext
     {
         public DbSet<Student> Students { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
     }
 }
