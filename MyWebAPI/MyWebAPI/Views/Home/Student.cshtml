@@ -1,0 +1,72 @@
+﻿@section scripts {
+    @Scripts.Render("~/bundles/app")
+}
+
+<div class="container" ng-app="myWebAPI">
+    <h1>WebAPI application uisng Entity Framework and AngularJS</h1>
+    <div ng-controller="myWebAPICtrl">
+        <form>
+            <table class="table table-striped">
+                <tr>
+                    <th>Student ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>City Name</th>
+                    <th>Phone Number</th>
+                    <th>Course Number</th>
+                    <th>Actions</th>
+                </tr>
+                <tr ng-repeat="studentinfo in StData">
+                    <td>
+                        {{studentinfo.StudentID}}
+                    </td>
+                    <td>
+                        {{studentinfo.FirstName}}
+                    </td>
+                    <td>
+                        {{studentinfo.LastName}}
+                    </td>
+                    <td>
+                        {{studentinfo.City}}
+                    </td>
+                    <td>
+                        {{studentinfo.PhoneNumber}}
+                    </td>
+                    <td>
+                        {{studentinfo.Course}}
+                    </td>
+                    <td>
+                        <button ng-click="select(studentinfo.StudentID)" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;
+                        <button ng-click="remove(studentinfo.StudentID)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input type="text" class="form-control" ng-model="student.FirstName" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input type="text" class="form-control" ng-model="student.LastName" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" ng-model="student.City" placeholder="City">
+            </div>
+            <div class="form-group">
+                <label for="city">Phone Number</label>
+                <input type="text" class="form-control" ng-model="student.PhoneNumber" placeholder="Phone Number">
+            </div>
+            <div class="form-group">
+                <label for="city">Course</label>
+                <input type="text" class="form-control" ng-model="student.Course" placeholder="Course">
+            </div>
+            <div class="form-group">
+                <input type="submit" ng-show="addSt" ng-click="add(student)" class="btn btn-success" value="Submit" />
+                <input type="submit" ng-show="updateSt" ng-click="update(student)" class="btn btn-warning" value="Update" />
+                <input type="submit" ng-show="clearSt" ng-click="clear()" class="btn btn-default" value="Create New" />
+            </div>
+        </form>
+
+    </div>
+</div>
