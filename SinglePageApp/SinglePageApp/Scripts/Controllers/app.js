@@ -2,13 +2,14 @@
 app.controller("mySPACtrl", function ($scope,$http) {
     $scope.name = "Hello world, Welcome to Single Page Application";
 
-    $scope.renderProfileInfo = function () {
-        $scope.Profile = response;
+    $scope.renderProfileInfo = function (response) {
+        console.log(response);
+        $scope.ProfileData = response;
     };
      
     $scope.ProfileInfo = function () {
         $http.get("api/Profiles")
-        .sucess(scope.renderProfileInfo);
+        .sucess($scope.renderProfileInfo);
     }
 
     $scope.ProfileInfo();
@@ -17,7 +18,7 @@ app.controller("mySPACtrl", function ($scope,$http) {
     $scope.add = function (Profile) {
         $http.post("api/Profiles",Profile)
         .sucess(function (response) {
-            $scope.Profile = response;
+            $scope.ProfileInfo();
         });
     }
 });
