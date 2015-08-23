@@ -9,7 +9,7 @@ app.controller("mySPACtrl", function ($scope,$http) {
      
     $scope.ProfileInfo = function () {
         $http.get("api/Profiles")
-        .sucess($scope.renderProfileInfo);
+        .success($scope.renderProfileInfo);
     }
 
     $scope.ProfileInfo();
@@ -17,7 +17,7 @@ app.controller("mySPACtrl", function ($scope,$http) {
 
     $scope.add = function (Profile) {
         $http.post("api/Profiles",Profile)
-        .sucess(function (response) {
+        .success(function (response) {
             $scope.ProfileInfo();
         });
     }
