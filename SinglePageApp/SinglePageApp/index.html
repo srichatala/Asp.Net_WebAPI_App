@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="mySPA">
+<head>
+    <title></title>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-route.min.js"></script>
+    <script src="Scripts/Controllers/app.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body ng-controller="mySPACtrl">
+    <div class="container">
+        <h1>Welcome to Single Page Application using AngularJS</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>Profile ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="P in Profile">
+                <td>
+                    {{P.ProfileID}}
+                </td>
+                <td>
+                    {{P.FirstName}}
+                </td>
+                <td>
+                    {{P.LastName}}
+                </td>
+                <td>
+                    {{P.Age}}
+                </td>
+                <td>
+                    <button ng-click="select(P.ProfileID)" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;
+                    <button ng-click="remove(P.ProfileID)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                </td>
+            </tr>
+        </table>
+        <form>
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input type="text" class="form-control" ng-model="Profile.FirstName" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input type="text" class="form-control" ng-model="Profile.LastName" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+                <label for="city">Age</label>
+                <input type="text" class="form-control" ng-model="Profile.Age" placeholder="Age">
+            </div>
+            <div class="form-group">
+                <input type="submit" ng-click="add(Profile)" class="btn btn-success" value="Submit" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>
