@@ -1,59 +1,131 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="mySPA">
+<html lang="en" ng-app="mySPA">
 <head>
-    <title></title>
-    <script src="Scripts/angular.min.js"></script>
-    <script src="Scripts/angular-route.min.js"></script>
-    <script src="Scripts/Controllers/app.js"></script>
-    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Full Slider - Start Bootstrap Template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="Content/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="Content/full-slider.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body ng-controller="mySPACtrl">
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Start Bootstrap</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- Full Page Image Background Carousel Header -->
+    <header id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- Wrapper for Slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <!-- Set the first background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('Content/img/1.JPG');"></div>
+                <div class="carousel-caption">
+                    <h2>Caption 1</h2>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the second background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('Content/img/2.JPG');"></div>
+                <div class="carousel-caption">
+                    <h2>Caption 2</h2>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the third background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('Content/img/3.JPG');"></div>
+                <div class="carousel-caption">
+                    <h2>Caption 3</h2>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the third background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('Content/img/4.JPG');"></div>
+                <div class="carousel-caption">
+                    <h2>Caption 3</h2>
+                </div>
+            </div>
+        </div>
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+    </header>
+    <!-- Page Content -->
     <div class="container">
-        <h1>Welcome to Web_Api's Single Page Application using AngularJS</h1>
-        <table class="table table-striped">
-            <tr>
-                <th>Profile ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Age</th>
-                <th></th>
-            </tr>
-            <tr ng-repeat="P in ProfileData">
-                <td>
-                    {{P.ProfileID}}
-                </td>
-                <td>
-                    {{P.FirstName}}
-                </td>
-                <td>
-                    {{P.LastName}}
-                </td>
-                <td>
-                    {{P.Age}}
-                </td>
-                <td>
-                    <button ng-click="select(P.ProfileID)" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;
-                    <button ng-click="remove(P.ProfileID)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                </td>
-            </tr>
-        </table>
-        <form>
-            <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input type="text" class="form-control" ng-model="Profile.FirstName" placeholder="First Name">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Full Slider by Start Bootstrap</h1>
+                <p>The background images for the slider are set directly in the HTML using inline CSS. The rest of the styles for this template are contained within the <code>full-slider.css</code>file.</p>
             </div>
-            <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input type="text" class="form-control" ng-model="Profile.LastName" placeholder="Last Name">
+        </div>
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Your Website 2014</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="city">Age</label>
-                <input type="text" class="form-control" ng-model="Profile.Age" placeholder="Age">
-            </div>
-            <div class="form-group">
-                <input type="submit" ng-click="add(Profile)" class="btn btn-success" value="Submit" />
-            </div>
-        </form>
+            <!-- /.row -->
+        </footer>
     </div>
+    <!-- /.container -->
+    <!-- jQuery -->
+    <script src="Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="Scripts/bootstrap.min.js"></script>
+    <!-- Script to Activate the Carousel -->
+    <script>
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        })
+    </script>
 </body>
 </html>
