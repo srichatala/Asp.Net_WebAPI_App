@@ -103,18 +103,26 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\img\1.jpg" />
-    <Content Include="Content\img\2.jpg" />
-    <Content Include="Content\img\4.jpg" />
-    <Content Include="Content\img\6.jpg" />
+    <Content Include="Content\full-slider.css" />
+    <Content Include="Content\img\1.JPG" />
+    <Content Include="Content\img\2.JPG" />
+    <Content Include="Content\img\3.JPG" />
+    <Content Include="Content\img\4.JPG" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\Controllers\app.js" />
-    <Content Include="Views\Profile.html" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\Controllers\HomeCtrl.js" />
+    <Content Include="Scripts\Controllers\ProfileCtrl.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="View\Article.html" />
+    <Content Include="View\Home.html" />
+    <Content Include="View\Profile.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

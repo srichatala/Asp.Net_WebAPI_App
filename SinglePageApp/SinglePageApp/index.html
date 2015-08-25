@@ -17,6 +17,15 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script src="Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="Scripts/bootstrap.min.js"></script>
+
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-route.min.js"></script>
+    <script src="Scripts/app.js"></script>
+    <script src="Scripts/Controllers/ProfileCtrl.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -36,13 +45,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#">About</a>
+                        <a href="#/Home">Home</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
+                        <a href="#/Profile">Profile</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="#/Article">Articel</a>
                     </li>
                 </ul>
             </div>
@@ -50,69 +59,18 @@
         </div>
         <!-- /.container -->
     </nav>
-    <!-- Full Page Image Background Carousel Header -->
-    <header id="myCarousel" class="carousel slide">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-            <li data-target="#myCarousel" data-slide-to="3"></li>
-        </ol>
-        <!-- Wrapper for Slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <!-- Set the first background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('Content/img/1.JPG');"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 1</h2>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the second background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('Content/img/2.JPG');"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 2</h2>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the third background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('Content/img/3.JPG');"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 3</h2>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the third background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('Content/img/4.JPG');"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 4</h2>
-                </div>
-            </div>
-        </div>
-        <!-- Controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-            <span class="icon-prev"></span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-            <span class="icon-next"></span>
-        </a>
-    </header>
+    <div ng-view>
+
+    </div>
+    
     <!-- Page Content -->
     <div class="container">
         <!-- Footer -->
-        <footer>
-
-            <p>Copyright &copy; IT_Village.com 2015-16</p>
-
-            <!-- /.row -->
+        <footer class="modal-footer">
+            Copyright © 2015-16 IT_Village Corp. All rights reserved.
         </footer>
     </div>
     <!-- /.container -->
-    <!-- jQuery -->
-    <script src="Scripts/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="Scripts/bootstrap.min.js"></script>
     <!-- Script to Activate the Carousel -->
     <script>
         $('.carousel').carousel({
