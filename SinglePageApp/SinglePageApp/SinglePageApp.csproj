@@ -101,6 +101,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Profile.mdf" />
+    <Content Include="App_Data\Profile_log.ldf">
+      <DependentUpon>Profile.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\full-slider.css" />
@@ -111,7 +115,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
+    <None Include="Views\index.cshtml" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -120,9 +124,9 @@
     <Content Include="Scripts\Controllers\HomeCtrl.js" />
     <Content Include="Scripts\Controllers\ProfileCtrl.js" />
     <Content Include="Scripts\jquery.js" />
-    <Content Include="View\Article.html" />
-    <Content Include="View\Home.html" />
-    <Content Include="View\Profile.html" />
+    <None Include="Views\Article.cshtml" />
+    <None Include="Views\Home.cshtml" />
+    <None Include="Views\Profile.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +156,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="View\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
