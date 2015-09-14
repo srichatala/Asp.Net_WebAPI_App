@@ -1,0 +1,60 @@
+﻿<Page
+    x:Class="Windows_StoreApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Windows_StoreApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </Page.Resources>
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" Margin="20">
+            <Button Content="get all" Click="GetAllClick"/>
+            <Button Content="new" Click="NewClick"/>
+            <TextBox x:Name="manufacturerQuery" Width="200" Text="Nokia" Margin="30,10,0,10"/>
+            <Button Content="query" Click="QueryClick"/>
+        </StackPanel>
+        <ListBox Grid.Column="0" Grid.Row="1" x:Name="phonesList" Width="400" Margin="30,10,10,10" SelectionChanged="PhoneSelectionChange">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Manufacturer}" FontSize="40" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                        <TextBlock Text="{Binding Name}" FontSize="20" Grid.Row="1" Margin="0,5,20,0" Foreground="#202020"/>
+                        <TextBlock Text="{Binding Color}" FontSize="20" Grid.Row="1" Grid.Column="1" Foreground="#303030" Margin="0,5,0,0"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <common:PhoneDetails Grid.Row="1" Grid.Column="1" x:Name="phoneDetails" Margin="20" PhoneSaved="PhoneSaved" PhoneDeleted="PhoneDeleted"/>
+    </Grid>
+</Page>
