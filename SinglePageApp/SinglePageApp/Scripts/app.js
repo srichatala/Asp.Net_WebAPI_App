@@ -3,14 +3,15 @@
 app.config(['$routeProvider', function ($routeProvider, $httpprovider) {
     $routeProvider.
         when('/Home', {
-            templateUrl: 'Views/Home.html'
+            templateUrl: 'Profile/Index.html',
+            controller: 'Homectrl'
         }).
         when('/Profile', {
-            templateUrl: 'Views/Profile.html',
+            templateUrl: 'Profile/Profile.html',
             controller: 'ProfileCtrl'
         }).
         when('/Article', {
-            templateUrl: 'Views/Article.html'
+            templateUrl: 'Profile/Article.html'
         }).
         otherwise({
             redirectTo:'/'
