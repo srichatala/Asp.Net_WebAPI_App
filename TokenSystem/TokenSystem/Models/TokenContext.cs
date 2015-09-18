@@ -7,12 +7,12 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace TokenSystem.Models
 {
-    public class TokenContext
+    public class TokenContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        //}
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
     }
 }
