@@ -10,6 +10,7 @@ namespace TokenSystem.Models
     public class TokenContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
+        public DbSet<Campus> Campuses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -43,7 +43,25 @@ namespace TokenSystem.Models
                 context.Students.Add(item);
             }
             context.SaveChanges();
-            base.Seed(context);
+            var campuses = new List<Campus>
+            {
+                new Campus{
+                    Campusname="Progress",
+                    Contactno="6477866026"
+                },
+                new Campus{
+                    Campusname="MorningSide",
+                    Contactno="6477866025"
+                },
+                new Campus{
+                    Campusname="Downtown",
+                    Contactno="6477866024"
+                }
+            };
+            foreach (var item in campuses) {
+                context.Campuses.Add(item);
+            }
+            context.SaveChanges();
         }
     }
 }
