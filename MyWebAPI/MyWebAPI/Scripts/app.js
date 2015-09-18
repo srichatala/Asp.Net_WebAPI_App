@@ -5,11 +5,12 @@ app.controller("myWebAPICtrl", function ($scope,$http) {
     $scope.addSt = true;
     $scope.updateSt = false;
     $scope.renderStudentModels = function (response) {
+        console.log(response);
         $scope.StData = response;
     };
 
     $scope.StudentInfo = function () {
-        $http.get("api/Students/")
+        $http.get("/api/Students/")
             .success($scope.renderStudentModels);
     }
 
@@ -30,7 +31,7 @@ app.controller("myWebAPICtrl", function ($scope,$http) {
     };
 
     $scope.select = function (StudentID) {
-        $http.get("api/Students/" + StudentID)
+        $http.get("/api/Students/" + StudentID)
             .success(function (response) {
                 $scope.addSt = false;
                 $scope.updateSt = true;

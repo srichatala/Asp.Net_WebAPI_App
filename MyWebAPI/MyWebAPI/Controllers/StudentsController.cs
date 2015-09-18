@@ -18,6 +18,7 @@ namespace MyWebAPI.Controllers
         private CollegeContext db = new CollegeContext();
 
         // GET: api/Students
+        [HttpGet]
         public IQueryable<Student> GetStudents()
         {
             return db.Students;

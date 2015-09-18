@@ -1,0 +1,3413 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExpansionDownloader</name>
+    </assembly>
+    <members>
+        <member name="T:ExpansionDownloader.Client.ClientMarshaller">
+            <summary>
+            This class binds the service API to your application client.
+            </summary>
+            <remarks>
+            <para>
+            It contains the <see cref="T:ExpansionDownloader.Client.IDownloaderClient"/> proxy, which is used to 
+            call functions in your client as well as the Stub, which is used to 
+            call functions in the client implementation of 
+            <see cref="T:ExpansionDownloader.Client.IDownloaderClient"/>.
+            </para>
+            <para>
+            The IPC is implemented using an Android Messenger and a service Binder.
+            The connect method should be called whenever the client wants to bind 
+            to the service.  
+            It opens up a service connection that ends up calling the 
+            <see cref="M:ExpansionDownloader.Client.IDownloaderClient.OnServiceConnected(Android.OS.Messenger)"/> client API that 
+            passes the service messenger in.
+            If the client wants to be notified by the service, it is responsible 
+            for then passing its messenger to the service in a separate call.
+            </para>
+            <para>
+            Critical methods are 
+            <see cref="!:DownloaderService.StartDownloadServiceIfRequired(Android.Content.Context,Android.Content.Intent,System.Type)"/> 
+            and <see cref="M:ExpansionDownloader.Client.ClientMarshaller.CreateStub(ExpansionDownloader.Client.IDownloaderClient,System.Type)"/>.
+            </para>
+            <para>
+            When your application first starts, you should first check whether your
+            app's expansion files are already on the device. If not, you should 
+            then call 
+            <see cref="!:DownloaderService.StartDownloadServiceIfRequired(Android.Content.Context,Android.Content.Intent,System.Type)"/>,
+            which starts your <see cref="!:DownloaderService"/> to download the 
+            expansion files if necessary. 
+            The method returns a value indicating whether download is required or 
+            not.
+            </para>
+            <para>
+            If a download is required, 
+            <see cref="!:DownloaderService.StartDownloadServiceIfRequired(Android.Content.Context,Android.Content.Intent,System.Type)"/> 
+            begins the download through the specified service and you should then 
+            call <see cref="M:ExpansionDownloader.Client.ClientMarshaller.CreateStub(ExpansionDownloader.Client.IDownloaderClient,System.Type)"/> to instantiate a member
+            <see cref="T:ExpansionDownloader.IDownloaderServiceConnection"/> object that you need in 
+            order to receive calls through your <see cref="T:ExpansionDownloader.Client.IDownloaderClient"/> 
+            interface.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.CreateProxy(Android.OS.Messenger)">
+            <summary>
+            Returns a proxy that will marshal calls to IDownloaderClient 
+            methods.
+            </summary>
+            <param name="msg">
+            The messenger.
+            </param>
+            <returns>
+            A proxy that will marshal calls to IDownloaderClient methods.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.CreateStub(ExpansionDownloader.Client.IDownloaderClient,System.Type)">
+            <summary>
+            Returns a stub object that, when connected, will listen for 
+            marshaled <see cref="T:ExpansionDownloader.Client.IDownloaderClient"/> methods and translate 
+            them into calls to the supplied interface.
+            </summary>
+            <param name="itf">
+            An implementation of IDownloaderClient that will be called when 
+            remote method calls are unmarshaled.
+            </param>
+            <param name="downloaderService">
+            The class for your implementation of<see cref="T:ExpansionDownloader.Service.DownloaderService"/>.
+            </param>
+            <returns>
+            The <see cref="T:ExpansionDownloader.IDownloaderServiceConnection"/> that allows you to connect to the service 
+            such that your <see cref="T:ExpansionDownloader.Client.IDownloaderClient"/> receives status updates.
+            </returns>
+        </member>
+        <member name="T:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection">
+            <summary>
+            The downloader service connection.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.IDownloaderServiceConnection">
+            <summary>
+            This is the interface that is used to connect/disconnect from the 
+            downloader service.
+            </summary>
+            <remarks>
+            You should get a proxy object that implements this interface by calling
+            <see cref="M:ExpansionDownloader.Client.ClientMarshaller.CreateStub(ExpansionDownloader.Client.IDownloaderClient,System.Type)"/> in your activity 
+            when the downloader service starts. 
+            Then, call <see cref="M:ExpansionDownloader.IDownloaderServiceConnection.Connect(Android.Content.Context)"/> during your activity's
+            <see cref="M:Android.App.Activity.OnResume"/> and call 
+            <see cref="M:ExpansionDownloader.IDownloaderServiceConnection.Disconnect(Android.Content.Context)"/> during onStop().
+            Then during the <see cref="M:ExpansionDownloader.Client.IDownloaderClient.OnServiceConnected(Android.OS.Messenger)"/> 
+            callback, you should call 
+            <see cref="M:ExpansionDownloader.IDownloaderServiceConnection.GetMessenger"/> to pass the 
+            stub's Messenger object to <see cref="M:ExpansionDownloader.Service.IDownloaderService.OnClientUpdated(Android.OS.Messenger)"/>.
+            </remarks>
+        </member>
+        <member name="M:ExpansionDownloader.IDownloaderServiceConnection.Connect(Android.Content.Context)">
+            <summary>
+            The connect.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.IDownloaderServiceConnection.Disconnect(Android.Content.Context)">
+            <summary>
+            The disconnect.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.IDownloaderServiceConnection.GetMessenger">
+            <summary>
+            The get messenger.
+            </summary>
+            <returns>
+            The Android.OS.Messenger.
+            </returns>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.clientType">
+            <summary>
+            The client type.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.messenger">
+            <summary>
+            Target we publish for clients to send messages to 
+            IncomingHandler.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.serviceConnection">
+            <summary>
+            The service connection.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.serviceTypeType">
+            <summary>
+            The service type type.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.isBound">
+            <summary>
+            The is bound.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.#ctor(ExpansionDownloader.Client.IDownloaderClient,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection"/> class.
+            </summary>
+            <param name="clientType">
+            The client type.
+            </param>
+            <param name="serviceType">
+            The service type.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.Connect(Android.Content.Context)">
+            <summary>
+            The connect.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.Disconnect(Android.Content.Context)">
+            <summary>
+            The disconnect.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.GetMessenger">
+            <summary>
+            Returns a messenger.
+            </summary>
+            <returns>
+            The messenger
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.SendMessage(Android.OS.Message)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="msg">
+            The msg.
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.ServiceConnection">
+            <summary>
+            Class for interacting with the main interface of the service.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.ServiceConnection.connection">
+            <summary>
+            The connection.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.ServiceConnection.#ctor(ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.ServiceConnection"/> class.
+            </summary>
+            <param name="connection">
+            The _downloader service connection.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.ServiceConnection.OnServiceConnected(Android.Content.ComponentName,Android.OS.IBinder)">
+            <summary>
+            This is called when the connection with the service has 
+            been established, giving us the object we can use to
+            interact with the service. 
+            We are communicating with the service using a Messenger, 
+            so here we get a client-side representation of that from 
+            the raw IBinder object.
+            </summary>
+            <param name="className">
+            </param>
+            <param name="service">
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.DownloaderServiceConnection.ServiceConnection.OnServiceDisconnected(Android.Content.ComponentName)">
+            <summary>
+            This is called when the connection with the service has 
+            been unexpectedly disconnected (its process crashed).
+            </summary>
+            <param name="className">
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Client.ClientMarshaller.Proxy">
+            <summary>
+            The proxy.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Client.IDownloaderClient">
+            <summary>
+            This interface should be implemented by the client activity for the
+            downloader. It is used to pass status from the service to the client.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Client.IDownloaderClient.OnDownloadProgress(ExpansionDownloader.DownloadProgressInfo)">
+            <summary>
+            Shows the download progress. This is intended to be used to fill 
+            out a client UI. 
+            This progress should only be shown in a few states such as
+            <see cref="F:ExpansionDownloader.DownloaderState.Downloading"/>.
+            </summary>
+            <param name="progress">
+            the DownloadProgressInfo object containing the current progress of 
+            all downloads.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.IDownloaderClient.OnDownloadStateChanged(ExpansionDownloader.DownloaderState)">
+            <summary>
+            <para>
+            Called when the download state changes. Depending on the state, 
+            there may be user requests. The service is free to change the 
+            download state in the middle of a user request, so the client 
+            should be able to handle this.
+            </para>
+            <para>
+            The Downloader Library includes a collection of string resources 
+            that correspond to each of the states, which you can use to provide 
+            users a useful message based on the state provided in this callback.
+            To fetch the appropriate string for a state, call 
+            <see cref="M:ExpansionDownloader.Service.Helpers.GetDownloaderStringFromState(Android.Content.Context,ExpansionDownloader.DownloaderState)"/>.
+            </para>
+            <para>
+            What this means to the developer: 
+            The application has gotten a message that the download has paused 
+            due to lack of WiFi. 
+            The developer should then show UI asking the user if they want to 
+            enable downloading over cellular connections with appropriate 
+            warnings. If the application suddenly starts downloading, the 
+            application should revert to showing the progress again, rather 
+            than leaving up the download over cellular UI up.
+            </para>
+            </summary>
+            <param name="newState">
+            The new state of the current download.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.IDownloaderClient.OnServiceConnected(Android.OS.Messenger)">
+            <summary>
+            <para>
+            Called internally by the stub when the service is bound to the 
+            client.
+            </para>
+            <para>
+            Critical implementation detail. In onServiceConnected we create the
+            remote service and marshaler. This is how we pass the client 
+            information back to the service so the client can be properly 
+            notified of changes. 
+            This must be done every time we reconnect to the service.
+            </para>
+            <para>
+            That is, when you receive this callback, you should call
+            <see cref="M:ExpansionDownloader.Service.ServiceMarshaller.CreateProxy(Android.OS.Messenger)"/>
+            to instantiate a member instance of 
+            <see cref="T:ExpansionDownloader.Service.IDownloaderService"/>, 
+            then call 
+            <see cref="M:ExpansionDownloader.Service.IDownloaderService.OnClientUpdated(Android.OS.Messenger)"/> 
+            with the Messenger retrieved from your 
+            <see cref="T:ExpansionDownloader.IDownloaderServiceConnection"/> proxy object.
+            </para>
+            </summary>
+            <param name="m">
+            the service Messenger. This Messenger is used to call the service 
+            API from the client.
+            </param>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMarshaller.Proxy.serviceMessenger">
+            <summary>
+            The service messenger.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.Proxy.#ctor(Android.OS.Messenger)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Client.ClientMarshaller.Proxy"/> class.
+            </summary>
+            <param name="messenger">
+            The messenger.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.Proxy.OnDownloadProgress(ExpansionDownloader.DownloadProgressInfo)">
+            <summary>
+            The on download progress.
+            </summary>
+            <param name="progress">
+            The progress.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.Proxy.OnDownloadStateChanged(ExpansionDownloader.DownloaderState)">
+            <summary>
+            The on download state changed.
+            </summary>
+            <param name="newState">
+            The new state.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.Proxy.OnServiceConnected(Android.OS.Messenger)">
+            <summary>
+            The on service connected.
+            </summary>
+            <param name="m">
+            The m.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Client.ClientMarshaller.Proxy.SendMessage(ExpansionDownloader.Client.ClientMessages,Android.OS.Bundle)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="clientMessage">
+            The client message.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Client.ClientMessageParameters">
+            <summary>
+            The downloader client message parameters.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMessageParameters.Messenger">
+            <summary>
+            The messenger.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMessageParameters.NewState">
+            <summary>
+            The new state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMessageParameters.Progress">
+            <summary>
+            The progress.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Client.ClientMessages">
+            <summary>
+            The downloader client messages.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMessages.DownloadStateChanged">
+            <summary>
+            The download state changed.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMessages.DownloadProgress">
+            <summary>
+            The download progress.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Client.ClientMessages.ServiceConnected">
+            <summary>
+            The service connected.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.CustomNotificationFactory">
+            <summary>
+            The custom notification factory.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.CustomNotificationFactory.CreateCustomNotification">
+            <summary>
+            Gets or sets Notification.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Database.DownloadsDatabase">
+            <summary>
+            The downloads database.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Database.DownloadsDatabase.downloadStatus">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Database.DownloadsDatabase.flags">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Database.DownloadsDatabase.versionCode">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:ExpansionDownloader.Database.DownloadsDatabase"/> class.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.GetDownloadInfo(System.String)">
+            <summary>
+            Returns the download information for the given filename.
+            </summary>
+            <param name="fileName">
+            The file name.
+            </param>
+            <returns>
+            The download information for the filename
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.GetDownloads">
+            <summary>
+            </summary>
+            <returns>
+            The System.Collections.Generic.List`1[T -&gt; ExpansionDownloader.Service.DownloadInfo].
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.UpdateDownload(ExpansionDownloader.Service.DownloadInfo)">
+            <summary>
+            This function will add a new file to the database if it does not exist.
+            </summary>
+            <param name="info">
+            DownloadInfo that we wish to store
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.UpdateDownloadCurrentBytes(ExpansionDownloader.Service.DownloadInfo)">
+            <summary>
+            The update download current bytes.
+            </summary>
+            <param name="di">
+            The di.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.UpdateFromDatabase(ExpansionDownloader.Service.DownloadInfo@)">
+            <summary>
+            The update from database.
+            </summary>
+            <param name="info">
+            The info.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.UpdateMetadata(System.Int32,ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            The update metadata.
+            </summary>
+            <param name="apkVersion">
+            The apk version.
+            </param>
+            <param name="status">
+            The download status.
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.Database.DownloadsDatabase.DownloadStatus">
+            <summary>
+            Gets the status.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Database.DownloadsDatabase.Flags">
+            <summary>
+            Gets Flags.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Database.DownloadsDatabase.IsDownloadRequired">
+            <summary>
+            Gets a value indicating whether IsDownloadRequired.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Database.DownloadsDatabase.VersionCode">
+            <summary>
+            Gets VersionCode.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Database.DownloadsDatabase.XmlDatastore">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Database.DownloadsDatabase.XmlDatastore.AppPath">
+            <summary>
+            The app path.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Database.DownloadsDatabase.XmlDatastore.DatabasePath">
+            <summary>
+            The database path.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.XmlDatastore.GetData``1">
+            <summary>
+            The get data.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <returns>
+            The T.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.XmlDatastore.GetDataPath``1">
+            <summary>
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <returns>
+            The System.String.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Database.DownloadsDatabase.XmlDatastore.SaveData``1(``0)">
+            <summary>
+            The save data.
+            </summary>
+            <param name="data">
+            The data.
+            </param>
+            <typeparam name="T">
+            </typeparam>
+        </member>
+        <member name="T:ExpansionDownloader.Database.MetadataTable">
+            <summary>
+            The metadata columns.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Database.MetadataTable.ApkVersion">
+            <summary>
+            The apk version.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Database.MetadataTable.DownloadStatus">
+            <summary>
+            The download status.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Database.MetadataTable.Flags">
+            <summary>
+            The flags.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloaderServiceExtras">
+            <summary>
+            The downloader service extras.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderServiceExtras.FileName">
+            <summary>
+            The extra file name.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderServiceExtras.IsWifiRequired">
+            <summary>
+            For intents used to notify the user that a download exceeds a size
+            threshold, if this extra is true, WiFi is required for this download
+            size; otherwise, it is only recommended.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderServiceExtras.MessageHandler">
+            <summary>
+            The extra message handler.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderServiceExtras.PackageName">
+            <summary>
+            The extra package name.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderServiceExtras.PendingIntent">
+            <summary>
+            The extra pending intent.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloaderState">
+            <summary>
+            The downloader client state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.Unknown">
+            <summary>
+            The unknown.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.Idle">
+            <summary>
+            The idle.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.FetchingUrl">
+            <summary>
+            The fetching url.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.Connecting">
+            <summary>
+            The connecting.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.Downloading">
+            <summary>
+            The downloading.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.Completed">
+            <summary>
+            The completed.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedNetworkUnavailable">
+            <summary>
+            The paused network unavailable.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedByRequest">
+            <summary>
+            The paused by request.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedWifiDisabledNeedCellularPermission">
+            <summary>
+            Implies that Wi-Fi is unavailable and cellular permission will 
+            restart the service (Wi-Fi manager is returning that Wi-Fi is not 
+            enabled).
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedNeedCellularPermission">
+            <summary>
+            Implies that Wi-Fi is unavailable and cellular permission will 
+            restart the service (Wi-Fi is enabled but not available).
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedRoaming">
+            <summary>
+            The paused roaming.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedNetworkSetupFailure">
+            <summary>
+            We were on a network that redirected us to another website
+            that delivered us the wrong file.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.PausedSdCardUnavailable">
+            <summary>
+            The paused sd card unavailable.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.FailedUnlicensed">
+            <summary>
+            The failed unlicensed.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.FailedFetchingUrl">
+            <summary>
+            The failed fetching url.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.FailedSdCardFull">
+            <summary>
+            The failed sd card full.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.FailedCanceled">
+            <summary>
+            The failed canceled.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloaderState.Failed">
+            <summary>
+            The failed.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloadNotification">
+            <summary>
+            The download notification.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.NotificationId">
+            <summary>
+            The notification id.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.context">
+            <summary>
+            The m context.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.label">
+            <summary>
+            The m label.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.customNotification">
+            <summary>
+            The m custom notification.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.notification">
+            <summary>
+            The m notification.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.notificationManager">
+            <summary>
+            The m notification manager.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.clientProxy">
+            <summary>
+            The m client proxy.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.clientState">
+            <summary>
+            The m state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.currentNotification">
+            <summary>
+            The m current notification.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.currentText">
+            <summary>
+            The m current text.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.currentTitle">
+            <summary>
+            The m current title.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadNotification.progressInfo">
+            <summary>
+            The m progress info.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.#ctor(Android.Content.Context,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.DownloadNotification"/> class.
+            </summary>
+            <param name="ctx">
+            The ctx.
+            </param>
+            <param name="applicationLabel">
+            The application label.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.OnDownloadProgress(ExpansionDownloader.DownloadProgressInfo)">
+            <summary>
+            The on download progress.
+            </summary>
+            <param name="progress">
+            The progress.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.OnDownloadStateChanged(ExpansionDownloader.DownloaderState)">
+            <summary>
+            The on download state changed.
+            </summary>
+            <param name="newState">
+            The new state.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.OnServiceConnected(Android.OS.Messenger)">
+            <summary>
+            The on service connected.
+            </summary>
+            <param name="m">
+            The m.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.ResendState">
+            <summary>
+            The resend state.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.SetMessenger(Android.OS.Messenger)">
+            <summary>
+            Called in response to OnClientUpdated. Creates a new proxy and 
+            notifies it of the current state.
+            </summary>
+            <param name="msg">
+            the client Messenger to notify
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.PendingIntent">
+            <summary>
+            Gets or sets PendingIntent.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloadNotification.ICustomNotification">
+            <summary>
+            The custom notification.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadNotification.ICustomNotification.UpdateNotification(Android.Content.Context)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="context">
+            The context to use to obtain access to the Notification Service
+            </param>
+            <returns>
+            The Android.App.Notification.
+            </returns>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.CurrentBytes">
+            <summary>
+            Sets CurrentBytes.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.Icon">
+            <summary>
+            Sets Icon.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.PendingIntent">
+            <summary>
+            Sets PendingIntent.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.Ticker">
+            <summary>
+            Sets Ticker.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.TimeRemaining">
+            <summary>
+            Sets TimeRemaining.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.Title">
+            <summary>
+            Sets Title.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadNotification.ICustomNotification.TotalBytes">
+            <summary>
+            Sets TotalBytes.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloadProgressInfo">
+            <summary>
+            The download progress info.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadProgressInfo.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.DownloadProgressInfo"/> class. 
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.DownloadProgressInfo"/> 
+            class from a string that represents the info.
+            </summary>
+            <param name="parcel">
+            The parcel.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadProgressInfo.#ctor(System.Int64,System.Int64,System.Int64,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.DownloadProgressInfo"/> class. 
+            </summary>
+            <param name="overallTotal">
+            The overall total.
+            </param>
+            <param name="overallProgress">
+            The overall progress.
+            </param>
+            <param name="timeRemaining">
+            The time remaining.
+            </param>
+            <param name="currentSpeed">
+            The current speed.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.DownloadProgressInfo.ToString">
+            <summary>
+            Conver the current download info objet to a string.
+            </summary>
+            <returns>
+            A string representing the download info.
+            </returns>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadProgressInfo.CurrentSpeed">
+            <summary>
+            Gets the current speed in KB/S.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadProgressInfo.OverallProgress">
+            <summary>
+            Gets the overall progress.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadProgressInfo.OverallTotal">
+            <summary>
+            Gets the overall total.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.DownloadProgressInfo.TimeRemaining">
+            <summary>
+            Gets the time remaining.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloadServiceRequirement">
+            <summary>
+            The download service requirement.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadServiceRequirement.DownloadRequired">
+            <summary>
+            The download required.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadServiceRequirement.LvlCheckRequired">
+            <summary>
+            The lvl check required.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadServiceRequirement.NoDownloadRequired">
+            <summary>
+            The no download required.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.DownloadStatusExtras">
+            <summary>
+            Used with <see cref="T:ExpansionDownloader.ExpansionDownloadStatus"/>
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadStatusExtras.CurrentFileSize">
+            <summary>
+            The current file size.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadStatusExtras.CurrentProgress">
+            <summary>
+            The current progress.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadStatusExtras.State">
+            <summary>
+            The state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadStatusExtras.TotalProgress">
+            <summary>
+            The total progress.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.DownloadStatusExtras.TotalSize">
+            <summary>
+            The total size.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.ExpansionDownloadStatus">
+            <summary>
+            Lists the states that the download manager can set on a download to 
+            notify applications of the download progress.
+            </summary>
+            <remarks>
+            The codes follow the HTTP families:
+              1xx: informational
+              2xx: success
+              3xx: redirects (not used by the download manager)
+              4xx: client errors
+              5xx: server errors
+            </remarks>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.InformationalMinimum">
+            <summary>
+            Start of informational status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.InformationalMaximum">
+            <summary>
+            End of informational status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.SuccessMinimum">
+            <summary>
+            Start of succss status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.SuccessMaximum">
+            <summary>
+            End of succss status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.RedirectMinimum">
+            <summary>
+            Start of redirect status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.RedirectMaximum">
+            <summary>
+            End of redirect status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.ClientErrorMinimum">
+            <summary>
+            Start of client error status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.AnyErrorMinimum">
+            <summary>
+            Start of any error status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.ClientErrorMaximum">
+            <summary>
+            End of client error status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.ServerErrorMinimum">
+            <summary>
+            Start of server error status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.ServerErrorMaximum">
+            <summary>
+            End of server error status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.AnyErrorMaximum">
+            <summary>
+            End of any error status codes
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.Pending">
+            <summary>
+            This download hasn't stated yet.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.Running">
+            <summary>
+            This download has started.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.PausedByApp">
+            <summary>
+            This download has been paused by the owning app.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.WaitingToRetry">
+            <summary>
+            This download encountered some network error and is waiting before 
+            retrying the request.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.WaitingForNetwork">
+            <summary>
+            This download is waiting for network connectivity to proceed.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.QueuedForWifiOrCellularPermission">
+            <summary>
+            This download exceeded a size limit for mobile networks and is
+            waiting for a Wi-Fi connection to proceed.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.QueuedForWifi">
+            <summary>
+            This download exceeded a size limit for mobile networks and is
+            waiting for a Wi-Fi connection to proceed.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.Success">
+            <summary>
+            This download has successfully completed. Warning: there might be 
+            other status values that indicate success in the future. 
+            Use isSucccess() to capture the entire category.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.Forbidden">
+            <summary>
+            The requested URL is no longer available.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.FileDeliveredIncorrectly">
+            <summary>
+            The file was delivered incorrectly.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.FileAlreadyExists">
+            <summary>
+            The requested destination file already exists.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.CannotResume">
+            <summary>
+            Some possibly transient error occurred, but we can't resume the 
+            download.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.Canceled">
+            <summary>
+            This download was canceled
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.UnknownError">
+            <summary>
+            This download has completed with an error. Warning: there will be 
+            other status values that indicate errors in the future. 
+            Use isStatusError() to capture the entire category.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.FileError">
+            <summary>
+            This download couldn't be completed because of a storage issue.
+            Typically, that's because the filesystem is missing or full.
+            Use the more specific {@link #InsufficientSpaceError} and
+            {@link #DeviceNotFoundError} when appropriate.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.UnhandledRedirect">
+            <summary>
+            This download couldn't be completed because of an HTTP redirect 
+            response that the download manager couldn't handle.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.UnhandledHttpCode">
+            <summary>
+            This download couldn't be completed because of an unspecified 
+            unhandled HTTP code.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.HttpDataError">
+            <summary>
+            This download couldn't be completed because of an error receiving 
+            or processing data at the HTTP level.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.HttpException">
+            <summary>
+            This download couldn't be completed because of an HttpException 
+            while setting up the request.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.TooManyRedirects">
+            <summary>
+            This download couldn't be completed because there were too many 
+            redirects.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.InsufficientSpaceError">
+            <summary>
+            This download couldn't be completed due to insufficient storage 
+            space. Typically, this is because the SD card is full.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.DeviceNotFoundError">
+            <summary>
+            This download couldn't be completed because no external storage 
+            device was found. Typically, this is because the SD card is not 
+            mounted.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.BadRequest">
+            <summary>
+            This request couldn't be parsed. This is also used when processing 
+            requests with unknown/unsupported URI schemes.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.NotAcceptable">
+            <summary>
+            This download can't be performed because the content type cannot 
+            be handled.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.LengthRequired">
+            <summary>
+            This download cannot be performed because the length cannot be
+            determined accurately. 
+            <br/>
+            This is the code for the HTTP error "Length Required", which is 
+            typically used when making requests that require a content length 
+            but don't have one, and it is also used in the client when a 
+            response is received whose length cannot be determined accurately 
+            (thus making it impossible to know when a download completes).
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.PreconditionFailed">
+            <summary>
+            This download was interrupted and cannot be resumed.
+            <br/>
+            This is the code for the HTTP error "Precondition Failed", and it 
+            is also used in situations where the client doesn't have an ETag 
+            at all.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.MinimumArtificialErrorStatus">
+            <summary>
+            The lowest-valued error status that is not an actual HTTP status 
+            code.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.Unknown">
+            <summary>
+            The current status has not been set
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.ExpansionDownloadStatus.None">
+            <summary>
+            The current download has finished correctly and is valid
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.ExpansionDownloadStatusExtensions">
+            <summary>
+            Extension methods to help filter the <see cref="T:ExpansionDownloader.ExpansionDownloadStatus"/> values.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsClientError(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the status is a client error (i.e. 4xx).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The is status client error.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsCompleted(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the download has completed (either with success or
+            error).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The is status completed.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsError(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the status is an error (i.e. 4xx or 5xx).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The is status error.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsInformational(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the status is informational (i.e. 1xx).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The is status informational.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsRedirect(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the status is a redirect (i.e. 3xx).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The status a redirect.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsServerError(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the status is a server error (i.e. 5xx).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The is status server error.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.ExpansionDownloadStatusExtensions.IsSuccess(ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Returns whether the status is a success (i.e. 2xx).
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <returns>
+            The is status success.
+            </returns>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ControlAction">
+            <summary>
+            The control action.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ControlAction.Run">
+            <summary>
+            This download is allowed to run.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ControlAction.Paused">
+            <summary>
+            This download must pause at the first opportunity.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.CustomIntentService">
+            <summary>
+            The custom intent service.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.CustomIntentService.WhatMessage">
+            <summary>
+            The wha t_ message.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.CustomIntentService.name">
+            <summary>
+            The m name.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.CustomIntentService.redelivery">
+            <summary>
+            The m redelivery.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.CustomIntentService.serviceHandler">
+            <summary>
+            The m service handler.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.CustomIntentService.serviceLooper">
+            <summary>
+            The m service looper.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.CustomIntentService"/> class.
+            </summary>
+            <param name="paramString">
+            The param string.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.OnBind(Android.Content.Intent)">
+            <summary>
+            The on bind.
+            </summary>
+            <param name="paramIntent">
+            The param intent.
+            </param>
+            <returns>
+            The Android.OS.IBinder.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.OnCreate">
+            <summary>
+            The on create.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.OnDestroy">
+            <summary>
+            The on destroy.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.OnStart(Android.Content.Intent,System.Int32)">
+            <summary>
+            The on start.
+            </summary>
+            <param name="paramIntent">
+            The param intent.
+            </param>
+            <param name="startId">
+            The start id.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.OnStartCommand(Android.Content.Intent,Android.App.StartCommandFlags,System.Int32)">
+            <summary>
+            The on start command.
+            </summary>
+            <param name="paramIntent">
+            The param intent.
+            </param>
+            <param name="flags">
+            The flags.
+            </param>
+            <param name="startId">
+            The start id.
+            </param>
+            <returns>
+            The Android.App.StartCommandResult.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.SetIntentRedelivery(System.Boolean)">
+            <summary>
+            The set intent redelivery.
+            </summary>
+            <param name="enabled">
+            The enabled.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.OnHandleIntent(Android.Content.Intent)">
+            <summary>
+            The on handle intent.
+            </summary>
+            <param name="paramIntent">
+            The param intent.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.ShouldStop">
+            <summary>
+            Checks to see if the service should the sevice stop.
+            </summary>
+            <returns>
+            True if the service should stop, otherwise false.
+            </returns>
+        </member>
+        <member name="T:ExpansionDownloader.Service.CustomIntentService.ServiceHandler">
+            <summary>
+            The service handler.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.CustomIntentService.ServiceHandler.customIntentService">
+            <summary>
+            The customIntentService.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.ServiceHandler.#ctor(Android.OS.Looper,ExpansionDownloader.Service.CustomIntentService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.CustomIntentService.ServiceHandler"/> class.
+            </summary>
+            <param name="looper">
+            The looper.
+            </param>
+            <param name="customIntentService">
+            The customIntentService.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.CustomIntentService.ServiceHandler.HandleMessage(Android.OS.Message)">
+            <summary>
+            The handle message.
+            </summary>
+            <param name="paramMessage">
+            The param message.
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderService">
+            <summary>
+            The downloader service.
+            </summary>
+            <summary>
+            The downloader service.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.IDownloaderService">
+            <summary>
+            Represents a service that will perform downloads.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.IDownloaderService.OnClientUpdated(Android.OS.Messenger)">
+            <summary>
+            Call this when you get <see cref="M:ExpansionDownloader.Client.IDownloaderClient.OnServiceConnected(Android.OS.Messenger)"/> 
+            from the downloader client to register it with the service. 
+            It will automatically send the current status to the client.
+            </summary>
+            <param name="clientMessenger">
+            The client Messenger.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.IDownloaderService.RequestAbortDownload">
+            <summary>
+            Request that the service abort the current download. The service 
+            should respond by changing the state to 
+            <see cref="F:ExpansionDownloader.DownloaderState.FailedCanceled"/>.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.IDownloaderService.RequestContinueDownload">
+            <summary>
+            Request that the service continue a paused download, when in any
+            paused or failed state, including
+            <see cref="F:ExpansionDownloader.DownloaderState.PausedByRequest"/>.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.IDownloaderService.RequestDownloadStatus">
+            <summary>
+            Requests that the download status be sent to the client.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.IDownloaderService.RequestPauseDownload">
+            <summary>
+            Request that the service pause the current download. The service
+            should respond by changing the state to 
+            <see cref="F:ExpansionDownloader.DownloaderState.PausedByRequest"/>.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.IDownloaderService.SetDownloadFlags(ExpansionDownloader.Service.ServiceFlags)">
+            <summary>
+            Set the flags for this download (e.g. 
+            <see cref="F:ExpansionDownloader.Service.ServiceFlags.FlagsDownloadOverCellular"/>).
+            </summary>
+            <param name="flags">
+            The new flags to use.
+            </param>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.BufferSize">
+            <summary>
+            The buffer size used to stream the data.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.DefaultUserAgent">
+            <summary>
+            The default user agent used for downloads.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MaxRedirects">
+            <summary>
+            The maximum number of redirects. (can't be more than 7)
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MaximumRetries">
+            <summary>
+            The number of times that the download manager will retry its network
+            operations when no progress is happening before it gives up.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MinimumProgressStep">
+            <summary>
+            The minimum amount of progress that has to be done before the 
+            progress bar gets updated.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MinimumProgressTime">
+            <summary>
+            The minimum amount of time that has to elapse before the progress 
+            bar gets updated, in milliseconds.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MinimumRetryAfter">
+            <summary>
+            The minimum amount of time that the download manager accepts for
+            a Retry-After response header with a parameter in delta-seconds.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.RetryFirstDelay">
+            <summary>
+            The time between a failure and the first retry after an IOException.
+            Each subsequent retry grows exponentially, doubling each time.
+            The time is in seconds.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.WatchdogWakeTimer">
+            <summary>
+            The wake duration to check to see if a download is possible. (seconds)
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.ActiveThreadWatchdog">
+            <summary>
+            The wake duration to check to see if the process was killed. (seconds)
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.FilenameSequenceSeparator">
+            <summary>
+            When a number has to be appended to the filename, this string is
+            used to separate the base filename from the sequence number.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MaximumDownloads">
+            <summary>
+            The maximum number of rows in the database (FIFO).
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.SmoothingFactor">
+            <summary>
+            Service thread status
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.TemporaryFileExtension">
+            <summary>
+            The temporary file extension.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.MaxRetryAfter">
+            <summary>
+            The maximum amount of time that the download manager accepts for a 
+            Retry-After response header with a parameter in delta-seconds.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.isRunning">
+            <summary>
+            Service thread status
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.locker">
+            <summary>
+            The locker.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.serviceConnection">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.serviceMessenger">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.alarmIntent">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.averageDownloadSpeed">
+            <summary>
+            Used for calculating time remaining and speed
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.bytesAtSample">
+            <summary>
+            Used for calculating time remaining and speed
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.clientMessenger">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.connectionReceiver">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.connectivityManager">
+            <summary>
+            Bindings to important services
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.downloadNotification">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.fileCount">
+            <summary>
+            Byte counts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.millisecondsAtSample">
+            <summary>
+            Used for calculating time remaining and speed
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.networkState">
+            <summary>
+            The current network state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.pPendingIntent">
+            <summary>
+            Our binding to the network state broadcasts
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.packageInfo">
+            <summary>
+            Package we are downloading for (defaults to package of application)
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.stateChanged">
+            <summary>
+            Network state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.status">
+            <summary>
+            The status.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.wifiManager">
+            <summary>
+            Bindings to important services
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloaderService"/> class.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.StartDownloadServiceIfRequired(Android.Content.Context,Android.Content.Intent,System.Type)">
+            <summary>
+            This version assumes that the intent contains the pending intent as
+            a parameter. This is used for responding to alarms.
+            The pending intent must be in an extra with the key 
+            <see cref="!:DownloaderService#PendingIntent"/>.
+            </summary>
+            <param name="context">
+            Your application Context.
+            </param>
+            <param name="intent">
+            An Intent to start the Activity in your application that
+            shows the download progress and which will also start the 
+            application when downloadcompletes.
+            </param>
+            <param name="serviceType">
+            The type of the service to start.
+            </param>
+            <returns>
+            Whether the service was started and the reason for starting the 
+            service.
+            Either <see cref="F:ExpansionDownloader.DownloadServiceRequirement.NoDownloadRequired"/>,
+            <see cref="F:ExpansionDownloader.DownloadServiceRequirement.LvlCheckRequired"/>, or 
+            <see cref="F:ExpansionDownloader.DownloadServiceRequirement.DownloadRequired"/>
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.StartDownloadServiceIfRequired(Android.Content.Context,Android.App.PendingIntent,System.Type)">
+            <summary>
+            Starts the download if necessary. 
+            </summary>
+            <remarks>
+            This function starts a flow that 
+            does many things:
+              1) Checks to see if the APK version has been checked and the 
+                 metadata database updated 
+              2) If the APK version does not match, checks the new LVL status 
+                 to see if a new download is required 
+              3) If the APK version does match, then checks to see if the 
+                 download(s) have been completed
+              4) If the downloads have been completed, returns 
+                 <see cref="F:ExpansionDownloader.DownloadServiceRequirement.NoDownloadRequired"/> 
+            The idea is that this can be called during the startup of an 
+            application to quickly ascertain if the application needs to wait 
+            to hear about any updated APK expansion files. 
+            This does mean that the application MUST be run with a network 
+            connection for the first time, even if Market delivers all of the 
+            files.
+            </remarks>
+            <param name="context">
+            Your application Context.
+            </param>
+            <param name="pendingIntent">
+            A PendingIntent to start the Activity in your application that
+            shows the download progress and which will also start the 
+            application when downloadcompletes.
+            </param>
+            <param name="serviceType">
+            The class of your <see cref="T:ExpansionDownloader.Service.DownloaderService"/> implementation.
+            </param>
+            <returns>
+            Whether the service was started and the reason for starting the 
+            service.
+            Either <see cref="F:ExpansionDownloader.DownloadServiceRequirement.NoDownloadRequired"/>,
+            <see cref="F:ExpansionDownloader.DownloadServiceRequirement.LvlCheckRequired"/>, or 
+            <see cref="F:ExpansionDownloader.DownloadServiceRequirement.DownloadRequired"/>
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.GenerateSaveFile(System.String,System.Int64)">
+            <summary>
+            Creates a filename (where the file should be saved) from info about a download.
+            </summary>
+            <param name="filename">
+            The filename.
+            </param>
+            <param name="filesize">
+            The filesize.
+            </param>
+            <returns>
+            The generate save file.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.GenerateTempSaveFileName(System.String)">
+            <summary>
+            Returns the filename (where the file should be saved) from info about a download
+            </summary>
+            <param name="fileName">
+            The file Name.
+            </param>
+            <returns>
+            The generate temp save file name.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.GetLogMessageForNetworkError(ExpansionDownloader.Service.NetworkDisabledState)">
+            <summary>
+            a non-localized string appropriate for logging corresponding to one of the NETWORK_* constants.
+            </summary>
+            <param name="networkError">
+            The network Error.
+            </param>
+            <returns>
+            The get log message for network error.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.NotifyUpdateBytes(System.Int64)">
+            <summary>
+            Calculating a moving average for the speed so we don't get jumpy calculations for time etc.
+            </summary>
+            <param name="totalBytesSoFar">
+            The total Bytes So Far.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.OnBind(Android.Content.Intent)">
+            <summary>
+            The on bind.
+            </summary>
+            <param name="intent">
+            The intent.
+            </param>
+            <returns>
+            the binder
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.OnClientUpdated(Android.OS.Messenger)">
+            <summary>
+            The on client updated.
+            </summary>
+            <param name="messenger">
+            The client messenger.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.OnCreate">
+            <summary>
+            The on create.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.OnDestroy">
+            <summary>
+            The on destroy.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.RequestAbortDownload">
+            <summary>
+            The request abort download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.RequestContinueDownload">
+            <summary>
+            The request continue download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.RequestDownloadStatus">
+            <summary>
+            The request download status.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.RequestPauseDownload">
+            <summary>
+            The request pause download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.SetDownloadFlags(ExpansionDownloader.Service.ServiceFlags)">
+            <summary>
+            The set download flags.
+            </summary>
+            <param name="flags">
+            The flags.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.GetNetworkAvailabilityState">
+            <summary>
+            The get network availability state.
+            </summary>
+            <returns>
+            The ExpansionDownloader.Service.NetworkDisabledState.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.GetNetworkState(Android.Net.NetworkInfo)">
+            <summary>
+            Updates the network type based upon the info returned from the 
+            connectivity manager. 
+            </summary>
+            <param name="info">
+            </param>
+            <returns>
+            The ExpansionDownloader.Service.DownloaderService+NetworkState.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.OnHandleIntent(Android.Content.Intent)">
+            <summary>
+            This is the main thread for the Downloader. 
+            This thread is responsible for queuing up downloads and other goodness.
+            </summary>
+            <param name="intent">
+            The intent that was recieved.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.ShouldStop">
+            <summary>
+            Returns a value indicating whether the downloader should stop. 
+            This will return True if all the downloads are complete.
+            </summary>
+            <returns>
+            True if the downloader should stop.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.CancelAlarms">
+            <summary>
+            The cancel alarms.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.HandleFileUpdated(System.String,System.Int64)">
+            <summary>
+            The APK has been updated and a filename has been sent down from the
+            Market call. If the file has the same name as the previous file, we do
+            nothing as the file is guaranteed to be the same. If the file does not
+            have the same name, we download it if it hasn't already been delivered by
+            Market.
+            </summary>
+            <param name="filename">
+            the name of the new file
+            </param>
+            <param name="fileSize">
+            the size of the new file
+            </param>
+            <returns>
+            The handle file updated.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.PollNetworkState">
+            <summary>
+            Polls the network state, setting the flags appropriately.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.ScheduleAlarm(System.Int32)">
+            <summary>
+            The schedule alarm.
+            </summary>
+            <param name="wakeUp">
+            The wake up.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.UpdateLvl(ExpansionDownloader.Service.DownloaderService)">
+            <summary>
+            Updates the LVL information from the server.
+            </summary>
+            <param name="context">
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.UpdateNetworkState(Android.Net.NetworkInfo)">
+            <summary>
+            The update network state.
+            </summary>
+            <param name="info">
+            The info.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.IsLvlCheckRequired(Android.Content.PM.PackageInfo)">
+            <summary>
+            Returns true if the LVL check is required.
+            </summary>
+            <param name="pi">
+            the package info for the project
+            </param>
+            <returns>
+            true if the filenames need to be returned
+            </returns>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.BytesSoFar">
+            <summary>
+            Gets the number of bytes downloaded so far
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.Control">
+            <summary>
+            Gets the cntrol action.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.Status">
+            <summary>
+            Gets or sets the download state
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.TotalLength">
+            <summary>
+            Gets the total length of the downloads.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.AlarmReceiverClassName">
+            <summary>
+            Gets AlarmReceiverClassName.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.PublicKey">
+            <summary>
+            Gets PublicKey.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.Salt">
+            <summary>
+            Gets Salt.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.IsServiceRunning">
+            <summary>
+            Gets or sets a value indicating whether the service is running.
+            Note: Only use this internally.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderService.NetworkState">
+            <summary>
+            The network state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.Disconnected">
+            <summary>
+            The disconnected.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.Connected">
+            <summary>
+            The connected.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.Roaming">
+            <summary>
+            The roaming.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.Is3G">
+            <summary>
+            The is 3 g.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.Is4G">
+            <summary>
+            The is 4 g.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.IsCellular">
+            <summary>
+            The is cellular.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.NetworkState.IsFailOver">
+            <summary>
+            The is fail over.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderService.GenerateSaveFileError">
+            <summary>
+            Exception thrown from methods called by generateSaveFile() for any fatal
+            error.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.GenerateSaveFileError.#ctor(ExpansionDownloader.ExpansionDownloadStatus,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloaderService.GenerateSaveFileError"/> class.
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.GenerateSaveFileError.Status">
+            <summary>
+            Gets the status.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderService.InnerBroadcastReceiver">
+            <summary>
+            We use this to track network state, such as when WiFi, Cellular, etc. is
+            enabled when downloads are paused or in progress.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.InnerBroadcastReceiver.service">
+            <summary>
+            The m service.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.InnerBroadcastReceiver.#ctor(ExpansionDownloader.Service.DownloaderService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloaderService.InnerBroadcastReceiver"/> class.
+            </summary>
+            <param name="service">
+            The service.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.InnerBroadcastReceiver.OnReceive(Android.Content.Context,Android.Content.Intent)">
+            <summary>
+            The on receive.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+            <param name="intent">
+            The intent.
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderService.LvlRunnable">
+            <summary>
+            The lvl runnable.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.LvlRunnable.context">
+            <summary>
+            The context.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.LvlRunnable.#ctor(ExpansionDownloader.Service.DownloaderService,Android.App.PendingIntent)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloaderService.LvlRunnable"/> class.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+            <param name="intent">
+            The intent.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.LvlRunnable.Run">
+            <summary>
+            The run.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback">
+            <summary>
+            The apk license checker callback.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.lvlRunnable">
+            <summary>
+            The lvl runnable.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.policy">
+            <summary>
+            The policy.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.#ctor(ExpansionDownloader.Service.DownloaderService.LvlRunnable,LicenseVerificationLibrary.Policy.ApkExpansionPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback"/> class.
+            </summary>
+            <param name="lvlRunnable">
+            The lvl runnable.
+            </param>
+            <param name="policy">
+            The policy.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.Allow(LicenseVerificationLibrary.PolicyServerResponse)">
+            <summary>
+            The allow.
+            </summary>
+            <param name="reason">
+            The reason.
+            </param>
+            <exception cref="T:Java.Lang.RuntimeException">
+            Error with LVL checking and database integrity
+            </exception>
+            <exception cref="T:Java.Lang.RuntimeException">
+            Error with getting information from package name
+            </exception>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.ApplicationError(LicenseVerificationLibrary.CallbackErrorCode)">
+            <summary>
+            The application error.
+            </summary>
+            <param name="errorCode">
+            The error code.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.DontAllow(LicenseVerificationLibrary.PolicyServerResponse)">
+            <summary>
+            The dont allow.
+            </summary>
+            <param name="reason">
+            The reason.
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloaderService.LvlRunnable.ApkLicenseCheckerCallback.Context">
+            <summary>
+            Gets Context.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloaderServiceActions">
+            <summary>
+            The downloader sevice actions.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.ActionHide">
+            <summary>
+            The intent that gets sent when deleting the notification of a completed download
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.ActionList">
+            <summary>
+            The intent that gets sent when clicking an incomplete/failed download
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.ActionOpen">
+            <summary>
+            The intent that gets sent when clicking a successful download
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.ActionRetry">
+            <summary>
+            The intent that gets sent when the service must wake up for a retry.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.DownloadComplete">
+            <summary>
+            Broadcast intent action sent by the download manager when a download completes.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.DownloadStatus">
+            <summary>
+            Broadcast intent action sent by the download manager when download status changes.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloaderServiceActions.DownloadsChanged">
+            <summary>
+            The downloads changed.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloadInfo">
+            <summary>
+            The download info.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadInfo.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloadInfo"/> class.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadInfo.ResetDownload">
+            <summary>
+            The reset download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadInfo.ToString">
+            <summary>
+            Convert the download info object into a string.
+            </summary>
+            <returns>
+            A string representing the download info.
+            </returns>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.CurrentBytes">
+            <summary>
+            Gets or sets CurrentBytes.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.ETag">
+            <summary>
+            Gets or sets ETag.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.ExpansionFileType">
+            <summary>
+            Gets or sets ExpansionFileType.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.FailedCount">
+            <summary>
+            Gets or sets FailedCount.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.FileName">
+            <summary>
+            Gets or sets FileName.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.LastModified">
+            <summary>
+            Gets or sets LastModified.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.Package">
+            <summary>
+            Gets or sets Package.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.RedirectCount">
+            <summary>
+            Gets or sets RedirectCount.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.RetryAfter">
+            <summary>
+            Gets or sets RetryAfter.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.Status">
+            <summary>
+            Gets or sets Status.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.TotalBytes">
+            <summary>
+            Gets or sets TotalBytes.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadInfo.Uri">
+            <summary>
+            Gets or sets Uri.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloadThread">
+            <summary>
+            The download thread.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloadThread.context">
+            <summary>
+            The context.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloadThread.downloadInfo">
+            <summary>
+            The download info.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloadThread.downloadNotification">
+            <summary>
+            The download notification.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.DownloadThread.downloaderService">
+            <summary>
+            The downloader service.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.#ctor(ExpansionDownloader.Service.DownloadInfo,ExpansionDownloader.Service.DownloaderService,ExpansionDownloader.DownloadNotification)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloadThread"/> class.
+            </summary>
+            <param name="info">
+            The info.
+            </param>
+            <param name="service">
+            The service.
+            </param>
+            <param name="notification">
+            The notification.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.Run">
+            <summary>
+            Executes the download in a separate thread
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.AddRequestHeaders(ExpansionDownloader.Service.DownloadThread.InnerState,System.Net.HttpWebRequest)">
+            <summary>
+            Add headers for this download to the HTTP request to allow for resume.
+            </summary>
+            <param name="innerState">
+            The inner State.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.CannotResume(ExpansionDownloader.Service.DownloadThread.InnerState)">
+            <summary>
+            The cannot resume.
+            </summary>
+            <param name="innerState">
+            The inner state.
+            </param>
+            <returns>
+            True if the download cannot resume, otherwise false
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.CleanupDestination(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.ExpansionDownloadStatus)">
+            <summary>
+            Called just before the thread finishes, regardless of status, to take any
+            necessary action on the downloaded file.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="finalStatus">
+            The final Status.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.CloseDestination(ExpansionDownloader.Service.DownloadThread.State)">
+            <summary>
+            Close the destination output stream.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.HandleOtherStatus(ExpansionDownloader.Service.DownloadThread.InnerState,System.Net.HttpStatusCode)">
+            <summary>
+            Handle a status that we don't know how to deal with properly.
+            </summary>
+            <param name="innerState">
+            The inner State.
+            </param>
+            <param name="statusCode">
+            The status Code.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.HandleServiceUnavailable(ExpansionDownloader.Service.DownloadThread.State,System.Net.HttpWebResponse)">
+            <summary>
+            Handle a 503 Service Unavailable status by processing the Retry-After header.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.SyncDestination(ExpansionDownloader.Service.DownloadThread.State)">
+            <summary>
+            Sync the destination file to storage.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.WriteDataToDestination(ExpansionDownloader.Service.DownloadThread.State,System.Byte[],System.Int32)">
+            <summary>
+            Write a data buffer to the destination file.
+            </summary>
+            <param name="state">
+            </param>
+            <param name="data">
+            data buffer containing the data to write
+            </param>
+            <param name="bytesRead">
+            bytesRead how many bytes to write from the buffer
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.CheckConnectivity">
+            <summary>
+            Check if current connectivity is valid for this request.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.CheckPausedOrCanceled">
+            <summary>
+            Check if the download has been paused or canceled, stopping the 
+            request appropriately if it has been.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.ExecuteDownload(ExpansionDownloader.Service.DownloadThread.State,System.Net.HttpWebRequest)">
+            <summary>
+            Fully execute a single download request - setup and send the request,
+            handle the response, and transfer the data to the destination file.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.FinalizeDestinationFile(ExpansionDownloader.Service.DownloadThread.State)">
+            <summary>
+            Called after a successful completion to take any necessary action on the downloaded file.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.GetFinalStatusForHttpError(ExpansionDownloader.Service.DownloadThread.State)">
+            <summary>
+            The get final status for http error.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <returns>
+            The ExpansionDownloader.ExpansionDownloadStatus.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.HandleEndOfStream(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.Service.DownloadThread.InnerState)">
+            <summary>
+            Called when we've reached the end of the HTTP response stream, to update the database and
+            check for consistency.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="innerState">
+            The inner State.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.HandleExceptionalStatus(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.Service.DownloadThread.InnerState,System.Net.HttpWebResponse)">
+            <summary>
+            Check the HTTP response status and handle anything unusual (e.g. not 200/206).
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="innerState">
+            The inner State.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.HandleRedirect(ExpansionDownloader.Service.DownloadThread.State,System.Net.HttpWebResponse,System.Net.HttpStatusCode)">
+            <summary>
+            Handle a 3xx redirect status.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+            <param name="statusCode">
+            The status Code.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.LogNetworkState">
+            <summary>
+            The log network state.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.NotifyDownloadCompleted(ExpansionDownloader.ExpansionDownloadStatus,System.Boolean,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Stores information about the completed download, and notifies the initiating application.
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <param name="countRetry">
+            The count Retry.
+            </param>
+            <param name="retryAfter">
+            The retry After.
+            </param>
+            <param name="redirectCount">
+            The redirect Count.
+            </param>
+            <param name="gotData">
+            The got Data.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.OpenResponseEntity(ExpansionDownloader.Service.DownloadThread.State,System.Net.HttpWebResponse)">
+            <summary>
+            Open a stream for the HTTP response entity, handling I/O errors.
+            </summary>
+            <param name="state">
+            </param>
+            <param name="response">
+            </param>
+            <returns>
+            an InputStream to read the response entity
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.ProcessResponseHeaders(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.Service.DownloadThread.InnerState,System.Net.HttpWebResponse)">
+            <summary>
+            Read HTTP response headers and take appropriate action, including setting up the destination
+            file and updating the database.
+            </summary>
+            <param name="state">
+            </param>
+            <param name="innerState">
+            </param>
+            <param name="response">
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.ReadFromResponse(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.Service.DownloadThread.InnerState,System.Byte[],System.IO.Stream)">
+            <summary>
+            Read some data from the HTTP response stream, handling I/O errors.
+            </summary>
+            <param name="state">
+            </param>
+            <param name="innerState">
+            </param>
+            <param name="data">
+            data buffer to use to read data
+            </param>
+            <param name="entityStream">
+            entityStream stream for reading the HTTP response entity
+            </param>
+            <returns>
+            the number of bytes actually read or -1 if the end of the stream has been reached
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.ReadResponseHeaders(ExpansionDownloader.Service.DownloadThread.InnerState,System.Net.HttpWebResponse)">
+            <summary>
+            Read headers from the HTTP response and store them into local state.
+            </summary>
+            <param name="innerState">
+            The inner State.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.ReportProgress(ExpansionDownloader.Service.DownloadThread.InnerState)">
+            <summary>
+            Report download progress through the database if necessary.
+            </summary>
+            <param name="innerState">
+            The inner State.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.SendRequest(ExpansionDownloader.Service.DownloadThread.State,System.Net.HttpWebRequest)">
+            <summary>
+            Send the request to the server, handling any I/O exceptions.
+            </summary>
+            <param name="state">
+            The state.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The System.Net.HttpWebResponse.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.SetupDestinationFile(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.Service.DownloadThread.InnerState)">
+            <summary>
+            Prepare the destination file to receive data. 
+            If the file already exists, we'll set up appropriately for resumption.
+            </summary>
+            <param name="state">
+            </param>
+            <param name="innerState">
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.TransferData(ExpansionDownloader.Service.DownloadThread.State,ExpansionDownloader.Service.DownloadThread.InnerState,System.Byte[],System.IO.Stream)">
+            <summary>
+            Transfer as much data as possible from the HTTP response to the destination file.
+            </summary>
+            <param name="state">
+            </param>
+            <param name="innerState">
+            </param>
+            <param name="data">
+            buffer to use to read data
+            </param>
+            <param name="entityStream">
+            stream for reading the HTTP response entity
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.UpdateDatabaseFromHeaders(ExpansionDownloader.Service.DownloadThread.InnerState)">
+            <summary>
+            Update necessary database fields based on values of HTTP response headers that have been read.
+            </summary>
+            <param name="innerState">
+            The inner State.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.UpdateDownloadDatabase(ExpansionDownloader.ExpansionDownloadStatus,System.Boolean,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            The update download database.
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+            <param name="countRetry">
+            The count retry.
+            </param>
+            <param name="retryAfter">
+            The retry after.
+            </param>
+            <param name="redirectCount">
+            The redirect count.
+            </param>
+            <param name="gotData">
+            The got data.
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.UserAgent">
+            <summary>
+            Returns the default user agent
+            </summary>
+            <returns>
+            The user agent.
+            </returns>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloadThread.InnerState">
+            <summary>
+            State within ExecuteDownload()
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.BytesNotified">
+            <summary>
+            Gets or sets the bytes notified.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.BytesSoFar">
+            <summary>
+            Gets or sets the bytes so far.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.BytesThisSession">
+            <summary>
+            Gets or sets the bytes this session.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.ContinuingDownload">
+            <summary>
+            Gets or sets a value indicating whether the download is
+            continuing.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.HeaderContentDisposition">
+            <summary>
+            Gets or sets the header content disposition.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.HeaderContentLength">
+            <summary>
+            Gets or sets the header content length.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.HeaderContentLocation">
+            <summary>
+            Gets or sets the header content location.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.HeaderETag">
+            <summary>
+            Gets or sets the header e-tag.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.InnerState.TimeLastNotification">
+            <summary>
+            Gets or sets the time of the last notification.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloadThread.RetryDownloadException">
+            <summary>
+            The retry download exception.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.RetryDownloadException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloadThread.RetryDownloadException"/> class.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloadThread.State">
+            <summary>
+            State for the entire Run() method.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.State.#ctor(ExpansionDownloader.Service.DownloadInfo,ExpansionDownloader.Service.DownloaderService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloadThread.State"/> class.
+            </summary>
+            <param name="info">
+            The info.
+            </param>
+            <param name="service">
+            The service.
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.CountRetry">
+            <summary>
+            Gets or sets a value indicating whether to count the count the
+            retry.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.Filename">
+            <summary>
+            Gets or sets the filename.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.GotData">
+            <summary>
+            Gets or sets a value indicating whether there is data.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.NewUri">
+            <summary>
+            Gets or sets the new uri.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.RedirectCount">
+            <summary>
+            Gets or sets the number of redirects.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.RequestUri">
+            <summary>
+            Gets or sets the uri of the request
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.RetryAfter">
+            <summary>
+            Gets or sets the time before attempting a retry.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.State.Stream">
+            <summary>
+            Gets or sets the file stream of the destination.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.DownloadThread.StopRequestException">
+            <summary>
+            The stop request exception.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.DownloadThread.StopRequestException.#ctor(ExpansionDownloader.ExpansionDownloadStatus,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.DownloadThread.StopRequestException"/> class.
+            </summary>
+            <param name="finalStatus">
+            The final status.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+            <param name="throwable">
+            The throwable.
+            </param>
+        </member>
+        <member name="P:ExpansionDownloader.Service.DownloadThread.StopRequestException.FinalStatus">
+            <summary>
+            Gets the final status.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.Helpers">
+            <summary>
+            The helpers.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.Helpers.Random">
+            <summary>
+            The random.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.Helpers.ContentDispositionPattern">
+            <summary>
+            The content disposition pattern.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.Helpers.Megabytes">
+            <summary>
+            The megabytes.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:ExpansionDownloader.Service.Helpers"/> class.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.DeleteFile(System.String)">
+            <summary>
+            Delete the given file from device
+            </summary>
+            <param name="path">
+            The path.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.DoesFileExist(Android.Content.Context,System.String,System.Int64,System.Boolean)">
+            <summary>
+            Helper function to ascertain the existence of a file and return true/false appropriately.
+            </summary>
+            <param name="c">
+            the app/activity/service context
+            </param>
+            <param name="fileName">
+            the name (sans path) of the file to query
+            </param>
+            <param name="fileSize">
+            the size that the file must match
+            </param>
+            <param name="deleteFileOnMismatch">
+            if the file sizes do not match, delete the file
+            </param>
+            <returns>
+            true if it does exist, false otherwise
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GenerateSaveFileName(Android.Content.Context,System.String)">
+            <summary>
+            Returns the filename (where the file should be saved) from info about a download
+            </summary>
+            <param name="c">
+            The c.
+            </param>
+            <param name="fileName">
+            The file Name.
+            </param>
+            <returns>
+            The generate save file name.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetAvailableBytes(System.String)">
+            <summary>
+            Get the number of bytes available on the filesystem rooted at the given File.
+            </summary>
+            <param name="root">
+            The root.
+            </param>
+            <returns>
+            The get available bytes.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetDownloadProgressPercent(System.Int64,System.Int64)">
+            <summary>
+            Gets the download progress percent based on the current and total bytes.
+            </summary>
+            <param name="overallProgress">
+            The overall progress.
+            </param>
+            <param name="overallTotal">
+            The overall total.
+            </param>
+            <returns>
+            The download progress percent.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetDownloadProgressString(System.Int64,System.Int64)">
+            <summary>
+            Showing progress in MB here. 
+            It would be nice to choose the unit (KB, MB, GB) based on total 
+            file size, but given what we know about the expected ranges of file
+            sizes for APK expansion files, it's probably not necessary.
+            </summary>
+            <param name="overallProgress">
+            The overall Progress.
+            </param>
+            <param name="overallTotal">
+            The overall Total.
+            </param>
+            <returns>
+            The get download progress string.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetDownloadProgressStringNotification(System.Int64,System.Int64)">
+            <summary>
+            Adds a percentile to GetDownloadProgressString.
+            </summary>
+            <param name="overallProgress">
+            The overall Progress.
+            </param>
+            <param name="overallTotal">
+            The overall Total.
+            </param>
+            <returns>
+            The get download progress string notification.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetDownloaderStringFromState(Android.Content.Context,ExpansionDownloader.DownloaderState)">
+            <summary>
+            Converts download states that are returned by the
+            <see cref="!:IDownloaderClient.OnDownloadStateChanged"/> callback into usable strings.
+            This is useful if using the state strings built into the library to display user messages.
+            </summary>
+            <param name="context">
+            The context to use when reading resources.
+            </param>
+            <param name="state">
+            A string representing one of the STATE_* constant values from <see cref="!:IDownloaderClient"/>.
+            </param>
+            <returns>
+            A string id that corresponds to the state message.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetDownloaderStringFromState(ExpansionDownloader.DownloaderState)">
+            <summary>
+            Converts download states that are returned by the
+            <see cref="!:IDownloaderClient.OnDownloadStateChanged"/> callback into usable string IDs.
+            This is useful if using the state strings built into the library to display user messages.
+            </summary>
+            <param name="state">
+            One of the STATE_* constants from <see cref="!:IDownloaderClient"/>.
+            </param>
+            <returns>
+            A string ID that corresponds to the state message.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetExpansionApkFileName(Android.Content.Context,System.Boolean,System.Int32)">
+            <summary>
+            Returns the file name (without full path) for an Expansion APK file
+            from the given context.
+            </summary>
+            <param name="c">
+            the context
+            </param>
+            <param name="mainFile">
+            true for main file, false for patch file
+            </param>
+            <param name="versionCode">
+            the version of the file
+            </param>
+            <returns>
+            the file name of the expansion file
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetFileSystemRoot(System.String)">
+            <summary>
+            Get the root of the filesystem containing the given path
+            </summary>
+            <param name="path">
+            The path.
+            </param>
+            <returns>
+            The get file system root.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetSaveFilePath(Android.Content.Context)">
+            <summary>
+            Returns the path where the expansion files would be saved.
+            </summary>
+            <param name="c">
+            The c.
+            </param>
+            <returns>
+            The path where the files would be saved.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetSpeedString(System.Single)">
+            <summary>
+            Returns a string representation of the specified speed (KB/s).
+            </summary>
+            <param name="bytesPerMillisecond">
+            The bytes per millisecond.
+            </param>
+            <returns>
+            Returns a string (KB/s)
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.GetTimeRemaining(System.Int64)">
+            <summary>
+            Returns the time remaining (HH:MM \ MM:SS).
+            </summary>
+            <param name="duration">
+            The duration in milliseconds.
+            </param>
+            <returns>
+            The time remaining string.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.IsFilenameValid(System.String)">
+            <summary>
+            Checks whether the filename looks legitimate.
+            </summary>
+            <param name="filename">
+            The filename.
+            </param>
+            <returns>
+            The is filename valid.
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.Helpers.ParseContentDisposition(System.String)">
+            <summary>
+            Parse the Content-Disposition HTTP Header. The format of the header is
+            defined here: http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html This
+            header provides a filename for content that is going to be downloaded to
+            the file system. We only support the attachment type.
+            </summary>
+            <param name="contentDisposition">
+            The content Disposition.
+            </param>
+            <returns>
+            The parse content disposition.
+            </returns>
+        </member>
+        <member name="P:ExpansionDownloader.Service.Helpers.ExpansionPath">
+            <summary>
+            Gets the expansion files root path.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.Service.Helpers.IsExternalMediaMounted">
+            <summary>
+            Gets a value indicating whether the externl media is mounted.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.NetworkDisabledState">
+            <summary>
+            The following constants are used to indicates specific reasons for disallowing a
+            download from using a network, since specific causes can require special handling.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.NetworkDisabledState.CannotUseRoaming">
+            <summary>
+             The current connection is roaming, and the download can't proceed over a
+             roaming connection.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.NetworkDisabledState.NoConnection">
+            <summary>
+             There is no network connectivity.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.NetworkDisabledState.Ok">
+            <summary>
+             The network is usable for the given download.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.NetworkDisabledState.RecommendedUnusableDueToSize">
+            <summary>
+             The download exceeds the recommended maximum size for this network, the
+             user must confirm for this download to proceed without WiFi.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.NetworkDisabledState.TypeDisallowedByRequestor">
+            <summary>
+             The app requesting the download specific that it can't use the current
+             network connection.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.NetworkDisabledState.UnusableDueToSize">
+            <summary>
+             The download exceeds the maximum size for this network.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ServiceFlags">
+            <summary>
+            Flags for a download
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceFlags.FlagsDownloadOverCellular">
+            <summary>
+            Set this flag in response to the 
+            <see cref="F:ExpansionDownloader.DownloaderState.PausedNeedCellularPermission"/> 
+            state and then call RequestContinueDownload to resume a download
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ServiceMarshaller">
+            <summary>
+            Used by the client activity to proxy requests to the DownloaderService.
+            </summary>
+            <remarks>
+            Most importantly, you must call <see cref="M:ExpansionDownloader.Service.ServiceMarshaller.CreateProxy(Android.OS.Messenger)"/> during the 
+            <see cref="M:ExpansionDownloader.Client.IDownloaderClient.OnServiceConnected(Android.OS.Messenger)"/> callback in your 
+            activity in order to instantiate an <see cref="T:ExpansionDownloader.Service.IDownloaderService"/>
+            object that you can then use to issue commands to the
+            <see cref="T:ExpansionDownloader.Service.DownloaderService"/> (such as to pause and resume downloads).
+            </remarks>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.CreateProxy(Android.OS.Messenger)">
+            <summary>
+            Returns a proxy that will marshall calls to IDownloaderService methods
+            </summary>
+            <param name="messenger">
+            The messenger.
+            </param>
+            <returns>
+            A proxy that will marshall calls to IDownloaderService methods
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.CreateStub(ExpansionDownloader.Service.IDownloaderService)">
+            <summary>
+            Returns a stub object that, when connected, will listen for 
+            marshalled IDownloaderService methods and translate them into calls 
+            to the supplied interface.
+            </summary>
+            <param name="itf">
+            An implementation of IDownloaderService that will be called when
+            remote method calls are unmarshalled.
+            </param>
+            <returns>
+            A stub that will listen for marshalled IDownloaderService methods.
+            </returns>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection">
+            <summary>
+            The downloader service connection.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.downloaderService">
+            <summary>
+            The downloader service.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.messenger">
+            <summary>
+            The messenger.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.#ctor(ExpansionDownloader.Service.IDownloaderService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection"/> class.
+            </summary>
+            <param name="downloaderService">
+            The downloader service.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.Connect(Android.Content.Context)">
+            <summary>
+            The connect.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.Disconnect(Android.Content.Context)">
+            <summary>
+            The disconnect.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.GetMessenger">
+            <summary>
+            Returns a messenger.
+            </summary>
+            <returns>
+            The messenger
+            </returns>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.DownloaderServiceConnection.SendMessage(Android.OS.Message)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="message">
+            The message.
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ServiceMarshaller.Proxy">
+            <summary>
+            The proxy.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMarshaller.Proxy.messenger">
+            <summary>
+            The messenger.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.#ctor(Android.OS.Messenger)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.Service.ServiceMarshaller.Proxy"/> class.
+            </summary>
+            <param name="msg">
+            The msg.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.OnClientUpdated(Android.OS.Messenger)">
+            <summary>
+            The on client updated.
+            </summary>
+            <param name="clientMessenger">
+            The client messenger.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.RequestAbortDownload">
+            <summary>
+            The request abort download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.RequestContinueDownload">
+            <summary>
+            The request continue download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.RequestDownloadStatus">
+            <summary>
+            The request download status.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.RequestPauseDownload">
+            <summary>
+            The request pause download.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.SetDownloadFlags(ExpansionDownloader.Service.ServiceFlags)">
+            <summary>
+            The set download flags.
+            </summary>
+            <param name="flags">
+            The flags.
+            </param>
+        </member>
+        <member name="M:ExpansionDownloader.Service.ServiceMarshaller.Proxy.Send(ExpansionDownloader.Service.ServiceMessages,Android.OS.Bundle)">
+            <summary>
+            The send.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
+            <param name="p">
+            The p.
+            </param>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ServiceMessages">
+            <summary>
+            The downloader service messages.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMessages.RequestAbortDownload">
+            <summary>
+            A request to abort a download.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMessages.RequestPauseDownload">
+            <summary>
+            A request to pause a download.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMessages.SetDownloadFlags">
+            <summary>
+            Update the download flags.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMessages.RequestContinueDownload">
+            <summary>
+            A request to continue a download.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMessages.RequestDownloadState">
+            <summary>
+            A request for the download state.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceMessages.RequestClientUpdate">
+            <summary>
+            A request to update the client.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.Service.ServiceParameters">
+            <summary>
+            The downloader service parameters.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceParameters.Flags">
+            <summary>
+            The flags parameter.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.Service.ServiceParameters.Messenger">
+            <summary>
+            The messenger parameter.
+            </summary>
+        </member>
+        <member name="T:ExpansionDownloader.V3CustomNotification">
+            <summary>
+            The v 3 custom notification.
+            </summary>
+        </member>
+        <member name="F:ExpansionDownloader.V3CustomNotification.notification">
+            <summary>
+            The notification.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.V3CustomNotification.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ExpansionDownloader.V3CustomNotification"/> class.
+            </summary>
+        </member>
+        <member name="M:ExpansionDownloader.V3CustomNotification.UpdateNotification(Android.Content.Context)">
+            <summary>
+            Update the notification.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+            <returns>
+            The updated notification.
+            </returns>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.CurrentBytes">
+            <summary>
+            Gets or sets CurrentBytes.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.Icon">
+            <summary>
+            Gets or sets Icon.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.PendingIntent">
+            <summary>
+            Gets or sets PendingIntent.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.Ticker">
+            <summary>
+            Gets or sets Ticker.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.TimeRemaining">
+            <summary>
+            Gets or sets TimeRemaining.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.Title">
+            <summary>
+            Gets or sets Title.
+            </summary>
+        </member>
+        <member name="P:ExpansionDownloader.V3CustomNotification.TotalBytes">
+            <summary>
+            Gets or sets TotalBytes.
+            </summary>
+        </member>
+    </members>
+</doc>

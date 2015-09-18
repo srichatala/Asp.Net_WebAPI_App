@@ -1,0 +1,927 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>System.IO.Compression.Zip</name>
+    </assembly>
+    <members>
+        <member name="T:System.IO.Compression.Zip.ApezProvider">
+            <summary>
+            This defines a ContentProvider that marshalls the data from the ZIP 
+            files through a content provider Uri in order to provide file access 
+            for certain Android APIs that expect Uri access to media files.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.FieldNameValueMap">
+            <summary>
+            The field name value map.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.apkExtensionFile">
+            <summary>
+            The apk extension file.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.initialized">
+            <summary>
+            The initialized.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.ApplyBatch(System.Collections.Generic.IList{Android.Content.ContentProviderOperation})">
+            <summary>
+            The apply batch.
+            </summary>
+            <param name="operations">
+            The operations.
+            </param>
+            <returns>
+            The Android.Content.ContentProviderResult[].
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.Delete(Android.Net.Uri,System.String,System.String[])">
+            <summary>
+            The delete.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <param name="selection">
+            The selection.
+            </param>
+            <param name="args">
+            The args.
+            </param>
+            <returns>
+            The delete.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.GetType(Android.Net.Uri)">
+            <summary>
+            The get type.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <returns>
+            The get type.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.Insert(Android.Net.Uri,Android.Content.ContentValues)">
+            <summary>
+            The insert.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <param name="values">
+            The values.
+            </param>
+            <returns>
+            The Android.Net.Uri.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.OnCreate">
+            <summary>
+            The on create.
+            </summary>
+            <returns>
+            The on create.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.OpenAssetFile(Android.Net.Uri,System.String)">
+            <summary>
+            The open asset file.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <param name="mode">
+            The mode.
+            </param>
+            <returns>
+            The Android.Content.Res.AssetFileDescriptor.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.OpenFile(Android.Net.Uri,System.String)">
+            <summary>
+            The open file.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <param name="mode">
+            The mode.
+            </param>
+            <returns>
+            The Android.OS.ParcelFileDescriptor.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.Query(Android.Net.Uri,System.String[],System.String,System.String[],System.String)">
+            <summary>
+            The query.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <param name="projection">
+            The projection.
+            </param>
+            <param name="selection">
+            The selection.
+            </param>
+            <param name="selArgs">
+            The sel args.
+            </param>
+            <param name="sort">
+            The sort.
+            </param>
+            <returns>
+            The Android.Database.ICursor.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.Update(Android.Net.Uri,Android.Content.ContentValues,System.String,System.String[])">
+            <summary>
+            The update.
+            </summary>
+            <param name="uri">
+            The uri.
+            </param>
+            <param name="values">
+            The values.
+            </param>
+            <param name="selection">
+            The selection.
+            </param>
+            <param name="selectionArgs">
+            The selection args.
+            </param>
+            <returns>
+            The update.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.ApezProjections(System.String[]@)">
+            <summary>
+            The apez projections.
+            </summary>
+            <param name="projection">
+            The projection.
+            </param>
+            <returns>
+            The System.IO.Compression.Zip.ApezProvider+ApezProjection[].
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.MatrixCursor(System.String[],System.IO.Compression.Zip.ApezProvider.ApezProjection[],System.IO.Compression.Zip.ZipFileEntry[])">
+            <summary>
+            The matrix cursor.
+            </summary>
+            <param name="projection">
+            The projection.
+            </param>
+            <param name="intProjection">
+            The int projection.
+            </param>
+            <param name="entries">
+            The entries.
+            </param>
+            <returns>
+            The Android.Database.MatrixCursor.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApezProvider.InitIfNecessary">
+            <summary>
+            The init if necessary.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ApezProvider.Authority">
+            <summary>
+            Gets the Authority for this content provider.
+            </summary>
+            <remarks>
+            To implement APEZProvider in your application, you'll want to 
+            change the Authority to match what you define in the manifest.
+            </remarks>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ApezProvider.ApezProjection">
+            <summary>
+            The apez projection.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.File">
+            <summary>
+            The file.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.FileName">
+            <summary>
+            The file name.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.ZipFile">
+            <summary>
+            The zip file.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.Modification">
+            <summary>
+            The modification.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.Crc">
+            <summary>
+            The crc.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.CompressedLength">
+            <summary>
+            The compressed length.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.UncompressedLength">
+            <summary>
+            The uncompressed length.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezProjection.CompressionType">
+            <summary>
+            The compression type.
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ApezProvider.ApezContentFields">
+            <summary>
+            The apez content fields.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.CompressedLength">
+            <summary>
+            The compressed length.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.CompressionType">
+            <summary>
+            The compression type.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.Crc">
+            <summary>
+            The crc.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.File">
+            <summary>
+            The file.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.FileName">
+            <summary>
+            The file name.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.Modification">
+            <summary>
+            The modification.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.UncompressedLength">
+            <summary>
+            The uncompressed length.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApezProvider.ApezContentFields.ZipFile">
+            <summary>
+            The zip file.
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ApkExpansionSupport">
+            <summary>
+            The apk expansion support.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ApkExpansionSupport.ExpansionFilesPath">
+            <summary>
+            The shared path to all app expansion files
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApkExpansionSupport.GetApkExpansionFiles(Android.Content.Context,System.Int32,System.Int32)">
+            <summary>
+            The get apk expansion files.
+            </summary>
+            <param name="ctx">
+            The ctx.
+            </param>
+            <param name="mainVersion">
+            The main version.
+            </param>
+            <param name="patchVersion">
+            The patch version.
+            </param>
+            <returns>
+            A list of obb files for this app.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ApkExpansionSupport.GetApkExpansionZipFile(Android.Content.Context,System.Int32,System.Int32)">
+            <summary>
+            Gets a <see cref="T:System.IO.Compression.Zip.ExpansionZipFile"/> that contains a list of all 
+            the files in the combined main and patch obb packages.
+            </summary>
+            <param name="ctx">
+            The context.
+            </param>
+            <param name="mainVersion">
+            The main obb version.
+            </param>
+            <param name="patchVersion">
+            The patch obb version.
+            </param>
+            <returns>
+            The apk expansion zip file.
+            </returns>
+        </member>
+        <member name="T:System.IO.Compression.Zip.Compression">
+            <summary>
+            Compression method enumeration
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.Compression.Store">
+            <summary>
+            Uncompressed storage
+            </summary> 
+        </member>
+        <member name="F:System.IO.Compression.Zip.Compression.Deflate">
+            <summary>
+            Deflate compression method
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.Crc32">
+            <summary>
+            The crc 32.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.Crc32.CrcSeed">
+            <summary>
+            The crc seed.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.Crc32.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:System.IO.Compression.Zip.Crc32"/> class. 
+            Just invoked once in order to create the CRC32 lookup table.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.Crc32.Reset">
+            <summary>
+            Resets the CRC32 data checksum as if no update was ever called.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.Crc32.Update(System.Int32)">
+            <summary>
+            Updates the checksum with the int bval.
+            </summary>
+            <param name="value">
+            the byte is taken as the lower 8 bits of value
+            </param>
+        </member>
+        <member name="M:System.IO.Compression.Zip.Crc32.Update(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Adds the byte array to the data checksum.
+            </summary>
+            <param name="buffer">
+            The buffer which contains the data
+            </param>
+            <param name="offset">
+            The offset in the buffer where the data starts
+            </param>
+            <param name="count">
+            The number of data bytes to update the CRC with.
+            </param>
+        </member>
+        <member name="P:System.IO.Compression.Zip.Crc32.Crc32Table">
+            <summary>
+            Gets the CRC32 Table.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.Crc32.Value">
+            <summary>
+            Returns the CRC32 data checksum computed so far.
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ExpansionZipFile">
+            <summary>
+            The expansion zip file.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ExpansionZipFile.files">
+            <summary>
+            The files.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.#ctor(System.Collections.Generic.IEnumerable{System.IO.Compression.Zip.ZipFileEntry})">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ExpansionZipFile"/> class.
+            </summary>
+            <param name="entries">
+            The entries.
+            </param>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ExpansionZipFile"/> class.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ExpansionZipFile"/> class. 
+            class from a collection of zip file paths.
+            </summary>
+            <param name="zipPaths">
+            Collection of zip file paths
+            </param>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.AddZipFileEntries(System.Collections.Generic.IEnumerable{System.IO.Compression.Zip.ZipFileEntry})">
+            <summary>
+            Add all the entries from an existing <see cref="T:System.IO.Compression.Zip.ExpansionZipFile"/>
+            </summary>
+            <param name="merge">
+            The ExpansionZipFile to use.
+            </param>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.GetAllEntries">
+            <summary>
+            The get all entries.
+            </summary>
+            <returns>
+            A list of all the entries for this app.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.GetEntry(System.String)">
+            <summary>
+            The get entry.
+            </summary>
+            <param name="path">
+            The path.
+            </param>
+            <returns>
+            The entry at a specified relative path
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.MergeZipFile(System.IO.Compression.Zip.ExpansionZipFile)">
+            <summary>
+            Add all the entries from an existing <see cref="T:System.IO.Compression.Zip.ExpansionZipFile"/>
+            </summary>
+            <param name="merge">
+            The ExpansionZipFile to use.
+            </param>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ExpansionZipFile.MergeZipFile(System.String)">
+            <summary>
+            Add all the entries from a zip file on the system.
+            </summary>
+            <param name="path">
+            Path to the zip file
+            </param>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ZipFileEntry">
+            <summary>
+            Represents an entry in Zip file directory
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.Comment">
+            <summary>
+            Gets the user comment for file.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.CompressedSize">
+            <summary>
+            Gets the compressed file size.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.Crc32">
+            <summary>
+            Gets the 32-bit checksum of entire file.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.FileOffset">
+            <summary>
+            Gets the offset of file inside Zip storage.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.FileSize">
+            <summary>
+            Gets the original file size.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.FilenameInZip">
+            <summary>
+            Gets the full path and filename as stored in Zip.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.HeaderOffset">
+            <summary>
+            Gets the offset of header information inside Zip storage.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.HeaderSize">
+            <summary>
+            Gets the size of header information.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.Method">
+            <summary>
+            Gets the compression method.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.ModifyTime">
+            <summary>
+            Gets the last modification time of file.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileEntry.ZipFileName">
+            <summary>
+            Gets the full path and filename of the containing zip file.
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ZipFile">
+            <summary>
+            Unique class for compression/decompression file. Represents a Zip file.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ZipFile.SmoothingFactor">
+            <summary>
+            todo 
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ZipFile.centralDirImage">
+            <summary>
+            Central dir image
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ZipFile.zipFileStream">
+            <summary>
+            Stream object of storage file
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ZipFile"/> class. 
+            Method to open an existing storage file
+            </summary>
+            <param name="filename">
+            Full path of Zip file to open
+            </param>
+            <returns>
+            A valid ZipFile object
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ZipFile"/> class. 
+            Method to open an existing storage from stream
+            </summary>
+            <param name="stream">
+            Already opened stream with zip contents
+            </param>
+            <returns>
+            A valid ZipFile object
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.DateTimeToDosTime(System.DateTime)">
+            <summary>
+            DOS Date and time are packed values with the following format:
+              MS-DOS date bits description:
+                0-4 Day of the month (1–31) 
+                5-8 Month (1 = January, 2 = February, and so on) 
+                9-15 Year offset from 1980 (add 1980 to get actual year) 
+              MS-DOS time bits description:
+                0-4 Second divided by 2 
+                5-10 Minute (0–59) 
+                11-15 Hour (0–23 on a 24-hour clock) 
+            </summary>
+            <param name="dateTime">
+            The date Time.
+            </param>
+            <returns>
+            The date time to dos time.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.Validate(System.IO.Compression.Zip.ZipFileValidationHandler)">
+            <summary>
+            Ensures that the zip file is valid.
+            </summary>
+            <param name="validationHandler">
+            The class to hold the object for progress reporting
+            </param>
+            <returns>
+            True if the zip is valid, otherwise False.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.Close">
+            <summary>
+            Updates central directory (if pertinent) and close the Zip storage
+            </summary>
+            <remarks>
+            This is a required step, unless automatic dispose is used
+            </remarks>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.Dispose">
+            <summary>
+            Closes the Zip file stream
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.ExtractFile(System.IO.Compression.Zip.ZipFileEntry,System.String)">
+            <summary>
+            Copy the contents of a stored file into a physical file
+            </summary>
+            <param name="zfe">
+            Entry information of file to extract
+            </param>
+            <param name="filename">
+            Name of file to store uncompressed data
+            </param>
+            <returns>
+            True if success, false if not.
+            </returns>
+            <remarks>
+            Unique compression methods are Store and Deflate
+            </remarks>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.ExtractFile(System.IO.Compression.Zip.ZipFileEntry,System.IO.Stream)">
+            <summary>
+            Copy the contents of a stored file into an opened stream
+            </summary>
+            <param name="zfe">
+            Entry information of file to extract
+            </param>
+            <param name="stream">
+            Stream to store the uncompressed data
+            </param>
+            <returns>
+            True if success, false if not.
+            </returns>
+            <remarks>
+            Unique compression methods are Store and Deflate
+            </remarks>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.GetAllEntries">
+            <summary>
+            Read all the file records in the central directory 
+            </summary>
+            <returns>
+            List of all entries in directory.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.ReadFile(System.IO.Compression.Zip.ZipFileEntry)">
+            <summary>
+            Copy the contents of a stored file into an opened stream
+            </summary>
+            <param name="zfe">
+            Entry information of file to extract
+            </param>
+            <returns>
+            Stream to store the uncompressed data
+            </returns>
+            <remarks>
+            Unique compression methods are Store and Deflate
+            </remarks>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.DosTimeToDateTime(System.UInt32)">
+            <summary>
+            DOS Date and time are packed values with the following format:
+              MS-DOS date bits description:
+                0-4 Day of the month (1–31) 
+                5-8 Month (1 = January, 2 = February, and so on) 
+                9-15 Year offset from 1980 (add 1980 to get actual year) 
+              MS-DOS time bits description:
+                0-4 Second divided by 2 
+                5-10 Minute (0–59) 
+                11-15 Hour (0–23 on a 24-hour clock) 
+            </summary>
+            <param name="dosDateTime">
+            The dos Date Time.
+            </param>
+            <returns>
+            The .NET DateTime
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.GetEntry(System.Int32@)">
+            <summary>
+            Loads an entry from the zip file.
+            </summary>
+            <param name="pointer">
+            The pointer.
+            </param>
+            <returns>
+            An entry at this location
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.GetFileOffset(System.UInt32)">
+            <summary>
+            Returns the file offset based on the header's offset.
+            </summary>
+            <param name="headerOffset">
+            The header offset.
+            </param>
+            <returns>
+            The file offset.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.GetZipStream(System.IO.Compression.Zip.ZipFileEntry)">
+            <summary>
+            Returns a stream for the specified zip file entry.
+            </summary>
+            <param name="zfe">
+            The zip file entry for which to fetch a stream.
+            </param>
+            <returns>
+            A stream for the specified zip file entry.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFile.ReadFileInfo">
+            <summary>
+            Reads the end-of-central-directory record
+            </summary>
+            <returns>
+            True if the read was successful, false if there ws an error.
+            </returns>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFile.EntryCount">
+            <summary>
+            Gets the number of entries in the zip file.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFile.FileName">
+            <summary>
+            Gets filename of the zip file.
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ZipFileValidationHandler">
+            <summary>
+            The zip file validation handler.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipFileValidationHandler.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ZipFileValidationHandler"/> class.
+            </summary>
+            <param name="filename">
+            The filename.
+            </param>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.AverageSpeed">
+            <summary>
+            Gets or sets AverageSpeed.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.CurrentBytes">
+            <summary>
+            Gets or sets CurrentBytes.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.Filename">
+            <summary>
+            Gets Filename.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.ShouldCancel">
+            <summary>
+            Gets or sets a value indicating whether ShouldCancel.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.TimeRemaining">
+            <summary>
+            Gets or sets TimeRemaining.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.TotalBytes">
+            <summary>
+            Gets or sets TotalBytes.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipFileValidationHandler.UpdateUi">
+            <summary>
+            Gets or sets UpdateUi.
+            </summary>
+        </member>
+        <member name="T:System.IO.Compression.Zip.ZipStream">
+            <summary>
+            The zip stream.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ZipStream.innerStream">
+            <summary>
+            The inner stream.
+            </summary>
+        </member>
+        <member name="F:System.IO.Compression.Zip.ZipStream.zipFileEntry">
+            <summary>
+            The zip file entry.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.#ctor(System.IO.Stream,System.IO.Compression.Zip.ZipFileEntry)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.IO.Compression.Zip.ZipStream"/> class.
+            </summary>
+            <param name="innerStream">
+            The inner stream.
+            </param>
+            <param name="zipFileEntry">
+            The zip file entry.
+            </param>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.Close">
+            <summary>
+            The close.
+            </summary>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.Flush">
+            <summary>
+            The flush.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            </exception>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            The read.
+            </summary>
+            <param name="buffer">
+            The buffer.
+            </param>
+            <param name="offset">
+            The offset.
+            </param>
+            <param name="count">
+            The count.
+            </param>
+            <returns>
+            The read.
+            </returns>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            The seek.
+            </summary>
+            <param name="offset">
+            The offset.
+            </param>
+            <param name="origin">
+            The origin.
+            </param>
+            <returns>
+            The seek.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            </exception>
+            <exception cref="T:System.IO.EndOfStreamException">
+            </exception>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.SetLength(System.Int64)">
+            <summary>
+            The set length.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            </exception>
+        </member>
+        <member name="M:System.IO.Compression.Zip.ZipStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            The write.
+            </summary>
+            <param name="buffer">
+            The buffer.
+            </param>
+            <param name="offset">
+            The offset.
+            </param>
+            <param name="count">
+            The count.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            </exception>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipStream.CanRead">
+            <summary>
+            Gets a value indicating whether CanRead.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipStream.CanSeek">
+            <summary>
+            Gets a value indicating whether CanSeek.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipStream.CanWrite">
+            <summary>
+            Gets a value indicating whether CanWrite.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipStream.Length">
+            <summary>
+            Gets Length.
+            </summary>
+        </member>
+        <member name="P:System.IO.Compression.Zip.ZipStream.Position">
+            <summary>
+            Gets or sets Position.
+            </summary>
+        </member>
+    </members>
+</doc>
