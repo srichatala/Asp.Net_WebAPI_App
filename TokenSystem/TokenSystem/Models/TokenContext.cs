@@ -10,6 +10,7 @@ namespace TokenSystem.Models
     public class TokenContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
