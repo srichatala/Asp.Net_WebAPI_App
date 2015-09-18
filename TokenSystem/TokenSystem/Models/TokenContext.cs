@@ -11,6 +11,7 @@ namespace TokenSystem.Models
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Campus> Campuses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -62,6 +62,27 @@ namespace TokenSystem.Models
                 context.Campuses.Add(item);
             }
             context.SaveChanges();
+
+            var categories = new List<Category>
+            {
+                new Category{
+                    Categoryname="CO-OP"
+                },
+                 new Category{
+                    Categoryname="Registration"
+                },
+                 new Category{
+                    Categoryname="Academic Grades"
+                },
+                 new Category{
+                    Categoryname="Financial"
+                }
+            };
+            foreach (var item in categories)
+            {
+                context.Categories.Add(item);
+            }
+            context.SaveChanges();
         }
     }
 }
