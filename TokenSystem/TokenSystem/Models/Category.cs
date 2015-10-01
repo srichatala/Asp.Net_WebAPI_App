@@ -12,6 +12,6 @@ namespace TokenSystem.Models
     public class Category
     {
         public int CategoryId { get; set; }
-        public string Categoryname { get; set; }
+        public string Categoryname { get; set; }        
     }
 }
