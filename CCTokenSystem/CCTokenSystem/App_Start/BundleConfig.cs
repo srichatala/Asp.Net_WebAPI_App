@@ -27,7 +27,7 @@ namespace CCTokenSystem
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                        "~/Scripts/angular.min.js",
                        "~/Scripts/angular-route.min.js",
-                       "~/Scripts/app.js"));
+                       "~/Scripts/Controller/app.js"));
         }
     }
 }
