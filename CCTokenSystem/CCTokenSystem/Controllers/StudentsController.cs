@@ -1,119 +1,122 @@
-﻿using System;
+﻿using CCTokenSystem.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using System.Web.Http;
-using System.Web.Http.Description;
-using CCTokenSystem.Models;
 
 namespace CCTokenSystem.Controllers
 {
     public class StudentsController : ApiController
     {
-        private CCTokenSystemContext db = new CCTokenSystemContext();
+        CCTokenSystemContext dbcontext = new CCTokenSystemContext();
 
-        // GET: api/Students
-        public IQueryable<Student> GetStudents()
+        [HttpGet]
+        public IEnumerable<Student> GetAllStudents()
         {
-            return db.Students;
+            return dbcontext.Students.AsEnumerable<Student>();
         }
-
-        // GET: api/Students/5
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> GetStudent(int id)
+        public HttpResponseMessage GetbyStudentID([FromUri]int StudentID)
         {
-            Student student = await db.Students.FindAsync(id);
+            var student = dbcontext.Students.Where(sid=>sid.StudentID==StudentID);
             if (student == null)
             {
-                return NotFound();
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, student);
 
-            return Ok(student);
+            response.StatusCode = HttpStatusCode.Created;
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return response;
+        }
+        [HttpGet]
+        public Student GetStudentByID(int Id)
+        {
+            Student student = dbcontext.Students.Find(Id);
+
+            if (student == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+            return student;
         }
 
-        // PUT: api/Students/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStudent(int id, Student student)
+        [HttpPut]
+        public HttpResponseMessage UpdateStudent(Student student)
         {
-            if (!ModelState.IsValid)
+            if (student != null)
             {
-                return BadRequest(ModelState);
+                dbcontext.Entry(student).State = EntityState.Modified;
             }
-
-            if (id != student.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(student).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
+                dbcontext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!StudentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, student);
+
+            response.StatusCode = HttpStatusCode.Created;
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return response;
         }
 
-        // POST: api/Students
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> PostStudent(Student student)
+        [HttpPost]
+        public HttpResponseMessage CreateStudent(Student student)
         {
-            if (!ModelState.IsValid)
+            dbcontext.Students.Add(student);
+            try
             {
-                return BadRequest(ModelState);
+                dbcontext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            db.Students.Add(student);
-            await db.SaveChangesAsync();
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, student);
 
-            return CreatedAtRoute("DefaultApi", new { id = student.Id }, student);
+            response.StatusCode = HttpStatusCode.Created;
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return response;
         }
 
-        // DELETE: api/Students/5
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> DeleteStudent(int id)
+        [HttpDelete]
+        public HttpResponseMessage DeleteStudent(int Id)
         {
-            Student student = await db.Students.FindAsync(id);
+            Student student = dbcontext.Students.Find(Id);
+
             if (student == null)
             {
-                return NotFound();
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
+            dbcontext.Students.Remove(student);
 
-            db.Students.Remove(student);
-            await db.SaveChangesAsync();
-
-            return Ok(student);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            try
             {
-                db.Dispose();
+                dbcontext.SaveChanges();
             }
-            base.Dispose(disposing);
-        }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
 
-        private bool StudentExists(int id)
-        {
-            return db.Students.Count(e => e.Id == id) > 0;
+            return Request.CreateResponse(new HttpResponseMessage(HttpStatusCode.OK));
         }
     }
 }
