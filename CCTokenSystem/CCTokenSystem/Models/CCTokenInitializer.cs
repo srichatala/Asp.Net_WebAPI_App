@@ -44,6 +44,27 @@ namespace CCTokenSystem.Models
                 context.Students.Add(item);
             }
             context.SaveChanges();
+
+            var campus = new List<Campus>
+            {
+                new Campus {
+                    CampusName="Progress",
+                    ContactNo = "4158565000"
+                },
+                new Campus {
+                    CampusName="Morningside",
+                    ContactNo = "4158566000"
+                },
+                new Campus {
+                    CampusName="Downtown",
+                    ContactNo = "4158567000"
+                }
+            };
+            foreach(var item in campus)
+            {
+                context.Campuses.Add(item);
+            }
+            context.SaveChanges();
         }
     }
 }

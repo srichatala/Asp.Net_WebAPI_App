@@ -1,59 +1,43 @@
-﻿using CCTokenSystem.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web.Http;
+using CCTokenSystem.Models;
+using System.Net.Http.Headers;
+using System.Data.Entity;
 
 namespace CCTokenSystem.Controllers
 {
-    public class StudentsController : ApiController
+    public class CampusesController : ApiController
     {
         private CCTokenSystemContext dbcontext = new CCTokenSystemContext();
 
         [HttpGet]
-        public IEnumerable<Student> GetAllStudents()
+        public IEnumerable<Campus> GetAllCampses()
         {
-            return dbcontext.Students.AsEnumerable<Student>();
+            return dbcontext.Campuses.AsEnumerable<Campus>();
         }
-        public HttpResponseMessage GetbyStudentID([FromUri]int StudentID)
-        {
-            var student = dbcontext.Students.Where(sid => sid.StudentID == StudentID);
 
-            if (student == null)
-            {
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            }
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, student);
-
-            response.StatusCode = HttpStatusCode.Created;
-
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            return response;
-        }
         [HttpGet]
-        public Student GetStudentByID(int Id)
-        {
-            Student student = dbcontext.Students.Find(Id);
 
-            if (student == null)
+        public Campus GetCampusByID(int Id)
+        {
+            Campus campus = dbcontext.Campuses.Find(Id);
+            if (campus == null)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
-            return student;
+            return campus;
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateStudent(Student student)
+        public HttpResponseMessage UpdateCampus(Campus campus)
         {
-            if (student != null)
+            if (campus != null)
             {
-                dbcontext.Entry(student).State = EntityState.Modified;
+                dbcontext.Entry(campus).State = EntityState.Modified;
             }
 
             try
@@ -66,7 +50,7 @@ namespace CCTokenSystem.Controllers
             }
 
 
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, student);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, campus);
 
             response.StatusCode = HttpStatusCode.Created;
 
@@ -76,9 +60,9 @@ namespace CCTokenSystem.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage CreateStudent(Student student)
+        public HttpResponseMessage CreateCampus(Campus campus)
         {
-            dbcontext.Students.Add(student);
+            dbcontext.Campuses.Add(campus);
             try
             {
                 dbcontext.SaveChanges();
@@ -88,7 +72,7 @@ namespace CCTokenSystem.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, student);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, campus);
 
             response.StatusCode = HttpStatusCode.Created;
 
@@ -98,15 +82,15 @@ namespace CCTokenSystem.Controllers
         }
 
         [HttpDelete]
-        public HttpResponseMessage DeleteStudent(int Id)
+        public HttpResponseMessage DeleteCampus(int Id)
         {
-            Student student = dbcontext.Students.Find(Id);
+            Campus campus = dbcontext.Campuses.Find(Id);
 
-            if (student == null)
+            if (campus == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            dbcontext.Students.Remove(student);
+            dbcontext.Campuses.Remove(campus);
 
             try
             {
