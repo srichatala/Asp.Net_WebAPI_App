@@ -25,9 +25,7 @@ namespace CCTokenSystem
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                      "~/Scripts/angular.min.js",
-                      "~/Scripts/Controller/StudentCtrl/StudentCtrl.js",
-                      "~/Scripts/Controller/CampusCtrl/CampusCtrl.js"));
+                      "~/Scripts/angular.min.js"));
         }
     }
 }

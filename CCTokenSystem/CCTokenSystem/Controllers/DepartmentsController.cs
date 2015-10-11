@@ -5,52 +5,49 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CCTokenSystem.Models;
-using System.Net.Http.Headers;
 using System.Data.Entity;
+using System.Net.Http.Headers;
 
 namespace CCTokenSystem.Controllers
 {
-    public class CampusesController : ApiController
+    public class DepartmentsController : ApiController
     {
-        private CCTokenSystemContext dbcontext = new CCTokenSystemContext();
+        private CCTokenSystemContext db_context = new CCTokenSystemContext();
 
         [HttpGet]
-        public IEnumerable<Campus> GetAllCampses()  
+        public IEnumerable<Department> GetAllDepts()
         {
-            return dbcontext.Campuses.AsEnumerable<Campus>();
+            return db_context.Departments.AsEnumerable<Department>();
         }
 
         [HttpGet]
-
-        public Campus GetCampusByID(int Id)
+        public Department GetDeptById(int Id)
         {
-            Campus campus = dbcontext.Campuses.Find(Id);
-            if (campus == null)
+            Department dept = db_context.Departments.Find(Id);
+
+            if(dept == null)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
-            return campus;
+            return dept;
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateCampus(Campus campus)
+        public HttpResponseMessage UpdateDept(Department dept)
         {
-            if (campus != null)
+            if(dept != null)
             {
-                dbcontext.Entry(campus).State = EntityState.Modified;
+                db_context.Entry(dept).State = EntityState.Modified;
             }
-
             try
             {
-                dbcontext.SaveChanges();
+                db_context.SaveChanges();
             }
-            catch (Exception ex)
+            catch(Exception error)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, error);
             }
-
-
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, campus);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, dept);
 
             response.StatusCode = HttpStatusCode.Created;
 
@@ -60,19 +57,19 @@ namespace CCTokenSystem.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage CreateCampus(Campus campus)
+        public HttpResponseMessage CreateDept(Department dept)
         {
-            dbcontext.Campuses.Add(campus);
+            db_context.Departments.Add(dept);
             try
             {
-                dbcontext.SaveChanges();
+                db_context.SaveChanges();
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, campus);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, dept);
 
             response.StatusCode = HttpStatusCode.Created;
 
@@ -82,19 +79,19 @@ namespace CCTokenSystem.Controllers
         }
 
         [HttpDelete]
-        public HttpResponseMessage DeleteCampus(int Id)
+        public HttpResponseMessage DeleteDept(int Id)
         {
-            Campus campus = dbcontext.Campuses.Find(Id);
+            Department dept = db_context.Departments.Find(Id);
 
-            if (campus == null)
+            if (dept == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            dbcontext.Campuses.Remove(campus);
+            db_context.Departments.Remove(dept);
 
             try
             {
-                dbcontext.SaveChanges();
+                db_context.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ app.controller("CampusCtrl", function ($scope, $http) {
     $scope.Remove = function (CampusId) {
         $http.delete("/api/Campuses/" + CampusId)
             .success(function (response) {
-                $scope.StudentInfo();
+                $scope.CampusInfo();
             });
     };
 

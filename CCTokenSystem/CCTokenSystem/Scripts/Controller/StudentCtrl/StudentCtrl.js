@@ -1,6 +1,6 @@
 ﻿var app = angular.module("myWebAPI", [])
-app.controller("StudentCtrl", function ($scope, $http) {
 
+app.controller("StudentCtrl", function ($scope, $http) {
     //Get all stundet details
     $scope.renderStudentModels = function (response) {
         $scope.addSt = true;
@@ -18,22 +18,21 @@ app.controller("StudentCtrl", function ($scope, $http) {
 
     //Add student record into database
     $scope.Create = function (student) {
-        console.log(student);
-        $http.post("/api/students", student)
+        $http.post("/api/Students", student)
             .success(function (response) {
                 $scope.StudentInfo();
             })
     };
 
-    $scope.Remove = function (StudentID) {
-        $http.delete("/api/Students/" + StudentID)
+    $scope.Remove = function (Id) {
+        $http.delete("/api/Students/" + Id)
             .success(function (response) {
                 $scope.StudentInfo();
             });
     };
 
-    $scope.Select = function (StudentID) {
-        $http.get("/api/Students/" + StudentID)
+    $scope.Select = function (Id) {
+        $http.get("/api/Students/" + Id)
             .success(function (response) {
                 $scope.addSt = false;
                 $scope.updateSt = true;
@@ -57,5 +56,5 @@ app.controller("StudentCtrl", function ($scope, $http) {
         $scope.clearSt = false;
         $scope.student = null;
     };
-})
+});
 

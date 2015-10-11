@@ -49,20 +49,70 @@ namespace CCTokenSystem.Models
             {
                 new Campus {
                     CampusName="Progress",
-                    ContactNo = "4158565000"
+                    ContactNo = "4158565000",
+                    Address = "941 Progress",
+                    City="Scarbrough",
+                    Provience="Ontario",
+                    PostalCode="L9T7T2"
                 },
                 new Campus {
                     CampusName="Morningside",
-                    ContactNo = "4158566000"
+                    ContactNo = "4158566000",
+                    Address = "149 MorningSide",
+                    City="Scarbrough",
+                    Provience="Ontario",
+                    PostalCode="L9T7T2"
                 },
                 new Campus {
                     CampusName="Downtown",
-                    ContactNo = "4158567000"
+                    ContactNo = "4158567000",
+                    Address = "941 Young",
+                    City="Toronto",
+                    Provience="Ontario",
+                    PostalCode="L9T7T2"
                 }
             };
-            foreach(var item in campus)
+            foreach (var item in campus)
             {
                 context.Campuses.Add(item);
+            }
+            context.SaveChanges();
+
+            var Departments = new List<Department> {
+                new Department
+                {
+                    DeptName="Co-op",
+                    Advisor_Fname="Alalgu",
+                    Advisor_Lname="Murugappan",
+                    Email="co-op@my.centennialcollege.ca",
+                    ContactNo="6477866026",
+                    Extension=5555,
+                    CampusId=1
+                },
+                 new Department
+                {
+                    DeptName="International",
+                    Advisor_Fname="Vangli",
+                    Advisor_Lname="Khan",
+                    Email="internation@my.centennialcollege.ca",
+                    ContactNo="6477866026",
+                    Extension=5556,
+                    CampusId=1
+                },
+                  new Department
+                {
+                    DeptName="Time-Table",
+                    Advisor_Fname="Sri",
+                    Advisor_Lname="Chatala",
+                    Email="timetable@my.centennialcollege.ca",
+                    ContactNo="6477866026",
+                    Extension=5557,
+                    CampusId=1
+                }
+            };
+            foreach(var item in Departments)
+            {
+                context.Departments.Add(item);
             }
             context.SaveChanges();
         }

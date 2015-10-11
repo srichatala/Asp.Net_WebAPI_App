@@ -14,5 +14,23 @@ namespace CCTokenSystem.Controllers
 
             return View();
         }
+        public ActionResult Student()
+        {
+            ViewBag.Title = "Student Page";
+
+            return View();
+        }
+        public ActionResult Campus()
+        {
+            ViewBag.Title = "Campus Page";
+
+            return View();
+        }
+        public ActionResult Department()
+        {
+            ViewBag.Title = "Department Page";
+
+            return View();
+        }
     }
 }
