@@ -2,7 +2,7 @@
 
 app.controller("DeptCtrl", function ($scope, $http) {
 
-    $scope.renderCampusModel= function (response) {
+    $scope.renderCampusModel = function (response) {
         $scope.CampusData = response;
     };
 
@@ -55,7 +55,7 @@ app.controller("DeptCtrl", function ($scope, $http) {
 
     $scope.Update = function (dept) {
         console.log(dept);
-        $http.put("/api/Departments/", dept)
+        $http.put("/api/Departments/" + dept.DeptId, dept)
             .success(function (response) {
                 $scope.addSt = false;
                 $scope.updateSt = true;

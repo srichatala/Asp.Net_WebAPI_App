@@ -1,0 +1,69 @@
+﻿@model IEnumerable<CCTokenSystem.Models.Department>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Campuses.CampusName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeptName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Advisor_Fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Advisor_Lname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Extension)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Campuses.CampusName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeptName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Advisor_Fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Advisor_Lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Extension)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DeptId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DeptId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DeptId })
+        </td>
+    </tr>
+}
+
+</table>

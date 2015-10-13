@@ -26,7 +26,6 @@ namespace CCTokenSystem.Models
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Campus> Campuses { get; set; }
-
         public DbSet<Department> Departments { get; set; }
 
         //onModelCreating method will remove pluralizing the model name

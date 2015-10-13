@@ -67,9 +67,12 @@
             <label for="studentid" class="col-sm-5 control-label">Campus Name:</label>
             <div class="col-sm-7">
                 <select id="campusId" name="campus" class="form-control" ng-model="dept.CampusId" 
-                        ng-options="campus.CampusId as campus.CampusName for campus in CampusData"></select>
+                        ng-options="cam.CampusId as cam.CampusName for cam in CampusData">
+                    <option value="">Select Campus Name</option>
+                </select>
             </div>
         </div>
+        @*dept.DeptName,dept.Advisor_Fname,dept.Advisor_Lname,dept.Email,dept.ContactNo,dept.Extension,dept.CampusId*@
         <div class="form-group">
             <div class="col-sm-offset-5 col-sm-7">
                 <input type="submit" ng-show="addSt" ng-click="Create(dept)" ng-disabled="myForm.deptname.$dirty && myForm.deptname.$invalid || myForm.afname.$dirty && myForm.afname.$invalid ||

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,9 +19,10 @@ namespace CCTokenSystem.Models
         public string Email { get; set; }
         public string ContactNo { get; set; }
         public int Extension { get; set; }
-        public int CampusId { get; set; }
 
-        [ForeignKey("CampusId")]
+        [ForeignKey("Campuses")]
+        public int CampusId { get; set; }
+        //  [JsonIgnore]
         public virtual Campus Campuses { get; set; }
     }
 }
