@@ -22,7 +22,7 @@ namespace CCTokenSystem.Models
 
         [ForeignKey("Campuses")]
         public int CampusId { get; set; }
-        //  [JsonIgnore]
+       // [JsonIgnore]
         public virtual Campus Campuses { get; set; }
     }
 }

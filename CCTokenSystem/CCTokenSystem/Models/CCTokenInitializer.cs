@@ -49,27 +49,27 @@ namespace CCTokenSystem.Models
             {
                 new Campus {
                     CampusName="Progress",
-                    ContactNo = "4158565000",
-                    Address = "941 Progress",
+                    CampusAddress = "941 Progress",
                     City="Scarbrough",
-                    Provience="Ontario",
-                    PostalCode="L9T7T2"
+                    Province="Ontario",
+                    PostalCode="L9T7T2",
+                     Phone = "4158565000"
                 },
                 new Campus {
                     CampusName="Morningside",
-                    ContactNo = "4158566000",
-                    Address = "149 MorningSide",
+                    CampusAddress = "149 MorningSide",
                     City="Scarbrough",
-                    Provience="Ontario",
-                    PostalCode="L9T7T2"
+                    Province="Ontario",
+                    PostalCode="L9T7T2",
+                    Phone = "4158566000",
                 },
                 new Campus {
                     CampusName="Downtown",
-                    ContactNo = "4158567000",
-                    Address = "941 Young",
+                    CampusAddress = "941 Young",
                     City="Toronto",
-                    Provience="Ontario",
-                    PostalCode="L9T7T2"
+                    Province="Ontario",
+                    PostalCode="L9T7T2",
+                    Phone = "4158567000",
                 }
             };
             foreach (var item in campus)

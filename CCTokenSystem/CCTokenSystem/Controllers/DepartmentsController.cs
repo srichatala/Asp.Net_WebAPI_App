@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CCTokenSystem.Models;
+using System.Net.Http.Headers;
 
 namespace CCTokenSystem.Controllers
 {
@@ -16,95 +17,94 @@ namespace CCTokenSystem.Controllers
     {
         private CCTokenSystemContext db = new CCTokenSystemContext();
 
-        // GET: api/Departments
-        public IQueryable<Department> GetDepartments()
+        [HttpGet]
+        public IEnumerable<Department> GetAllDepartments()
         {
-            return db.Departments;
+            return db.Departments.AsEnumerable<Department>();
         }
 
-        // GET: api/Departments/5
-        [ResponseType(typeof(Department))]
-        public IHttpActionResult GetDepartment(int id)
+        [HttpGet]
+
+        public Department GetDepartmentByID(int Id)
         {
-            Department department = db.Departments.Find(id);
+            Department department = db.Departments.Find(Id);
             if (department == null)
             {
-                return NotFound();
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
-
-            return Ok(department);
+            return department;
         }
 
-        // PUT: api/Departments/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutDepartment(int id, Department department)
+        [HttpPut]
+        public HttpResponseMessage UpdateDepartment(Department department)
         {
-            if (!ModelState.IsValid)
+            if (department != null)
             {
-                return BadRequest(ModelState);
+                db.Entry(department).State = EntityState.Modified;
             }
-
-            if (id != department.DeptId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(department).State = EntityState.Modified;
 
             try
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!DepartmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, department);
+
+            response.StatusCode = HttpStatusCode.Created;
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return response;
         }
 
-        // POST: api/Departments
-        [ResponseType(typeof(Department))]
-        public IHttpActionResult PostDepartment(Department department)
+        [HttpPost]
+        public HttpResponseMessage CreateDepartment(Department department)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             db.Departments.Add(department);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
 
-            return CreatedAtRoute("DefaultApi", new { id = department.DeptId }, department);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, department);
+
+            response.StatusCode = HttpStatusCode.Created;
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return response;
         }
 
-        // DELETE: api/Departments/5
-        [ResponseType(typeof(Department))]
-        public IHttpActionResult DeleteDepartment(int id)
+        [HttpDelete]
+        public HttpResponseMessage DeleteDepartment(int Id)
         {
-            Department department = db.Departments.Find(id);
+            Department department = db.Departments.Find(Id);
+
             if (department == null)
             {
-                return NotFound();
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            db.Departments.Remove(department);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            db.Departments.Remove(department);
-            db.SaveChanges();
-
-            return Ok(department);
-        }
-
-
-        private bool DepartmentExists(int id)
-        {
-            return db.Departments.Count(e => e.DeptId == id) > 0;
+            return Request.CreateResponse(new HttpResponseMessage(HttpStatusCode.OK));
         }
     }
 }
